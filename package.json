@@ -1,0 +1,12 @@
+{
+  "name": "fastmail-calendar-overview",
+  "version": "1.0.0",
+  "description": "A browser extension which adds an overview of upcoming calendar events to the Fastmail mail sidebar",
+  "main": "index.js",
+  "repository": "https://github.com/mgeraci/fastmail-calendar-overview",
+  "author": "Michael P. Geraci <me@mgeraci.com>",
+  "license": "MIT",
+  "dependencies": {
+    "webpack": "4.41.2"
+  }
+}
