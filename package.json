@@ -6,7 +6,20 @@
   "repository": "https://github.com/mgeraci/fastmail-calendar-overview",
   "author": "Michael P. Geraci <me@mgeraci.com>",
   "license": "MIT",
+  "scripts": {
+    "watch": "webpack --watch --mode development",
+    "build": "webpack --mode production"
+  },
   "dependencies": {
-    "webpack": "4.41.2"
+    "lodash": "4.17.15"
+  },
+  "devDependencies": {
+    "css-loader": "3.2.0",
+    "mini-css-extract-plugin": "0.8.0",
+    "node-sass": "4.13.0",
+    "sass-loader": "8.0.0",
+    "style-loader": "1.0.0",
+    "webpack": "4.41.2",
+    "webpack-cli": "3.3.10"
   }
 }
