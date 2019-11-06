@@ -1,0 +1,26 @@
+{
+	"name": "Fastmail Calendar Overview",
+	"description": "Show an overview of your day's calendar events Fastmail's leftbar.",
+	"version": "2.0",
+	"content_scripts": [ {
+		"matches": [
+			"http://*.fastmail.com/*",
+			"https://*.fastmail.com/*",
+			"http://*.fastmail.com/",
+			"http://fastmail.com/",
+			"https://fastmail.com/"
+		],
+		"css": [
+			"dist/main.css"
+		],
+		"js": [
+			"dist/main.js"
+		],
+		"run_at": "document_idle"
+	} ],
+	"permissions": [
+		"storage"
+	],
+	"key": "OZQb9QImtrQt9dfKvkam0GK95alwJufrBb90LoSFh5g=",
+	"manifest_version": 2
+}
