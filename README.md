@@ -19,13 +19,16 @@ export default [
     url: 'https://...', // replace with your calendar url
   },
 
-	// add as many calendar entries as you'd like!
+  // add as many calendar entries as you'd like!
 ];
+```
 
 ## Compilation
 To compile the app for development, run `yarn watch`. This will start a webpack
 watcher and compile files on change. To compile the files once without watching,
 run `yarn build`.
+
+The root of the app is `src/index.js`.
 
 ## Adding to Chrome
 To add the extension to Chrome, go to your extensions page, click the "Load
