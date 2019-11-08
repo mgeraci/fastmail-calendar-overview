@@ -1,8 +1,11 @@
-/* global window, fetch */
+/* global window, document, fetch */
 
 import {
   TARGET_DIV,
   USAGE_DIV,
+  WRAPPER_ID,
+  MAX_HEIGHT,
+  REFRESH_INTERVAL,
 } from './constants';
 
 import CALENDARS from './calendars';
@@ -12,30 +15,27 @@ import Templates from './templates';
 import './style.scss';
 
 const FastmailCalendarOverview = {
-  maxHeight: 400,
-  interval: 1000 * 60 * 15, // 15 minutes
-
   init() {
     console.log('Fastmail Calendar Overview, calendars:', CALENDARS); // eslint-disable-line
 
-    Templates.make();
+    // get and parse the calendar data
+    this.fetchCalendars()
+      .then((data) => this.parseResults(data))
+      .then((data) => this.addMarkup(data));
 
-    // delay initial action for fastmail to initialize
-    setTimeout(() => {
-      this.startInterval();
-
-      this.fetchCalendars()
-        .then(this.parseResults)
-        .then(this.addMarkup);
-    }, 500);
+    // set a timer to refresh the calendars
+    this.startInterval();
   },
 
   startInterval() {
-    this.calendarTimer = setInterval(this.fetchCalendars.bind(this), this.interval);
+    this.calendarTimer = setInterval(
+      this.fetchCalendars.bind(this),
+      REFRESH_INTERVAL,
+    );
   },
 
   getTargetDiv() {
-    return $(TARGET_DIV).parent();
+    return document.getElementById(TARGET_DIV).parentNode;
   },
 
   fetchCalendars() {
@@ -62,22 +62,28 @@ const FastmailCalendarOverview = {
   },
 
   addMarkup(events) {
-    this.wrapper = $('#fastmail-calendar-overview-wrapper');
+    // prepare the underscore templates for use in the dom
+    Templates.init();
+
+    this.wrapper = document.getElementById(WRAPPER_ID);
     const newContent = Templates.wrapper({ events });
+    console.log(newContent);
 
     if (this.wrapper.length) {
-      this.wrapper.replaceWith(newContent);
+      this.wrapper.innerHTML = newContent;
     } else {
-      this.getTargetDiv().append(newContent);
+      this.getTargetDiv().appendChild(newContent);
     }
 
-    this.wrapper = $('#fastmail-calendar-overview-wrapper');
+    this.wrapper = document.getElementById(WRAPPER_ID);
     this.sizeWrapper();
 
-    return $(window).on('resize', this.sizeWrapper.bind(this));
+    // TODO add a resize event listener
+    // return $(window).on('resize', this.sizeWrapper.bind(this));
   },
 
   sizeWrapper() {
+    /*
     const columnHeight = this.getTargetDiv().height();
     const lastColumnElement = $('.v-Sources-group');
     const lastElementBottom = lastColumnElement.offset().top + lastColumnElement.outerHeight();
@@ -86,18 +92,27 @@ const FastmailCalendarOverview = {
 
     let overviewHeight = columnHeight - lastElementBottom - usageHeight - margin;
 
-    if (overviewHeight > this.maxHeight) {
-      overviewHeight = this.maxHeight;
+    if (overviewHeight > MAX_HEIGHT) {
+      overviewHeight = MAX_HEIGHT;
     }
 
-    return this.wrapper.css({
+    this.wrapper.css({
       bottom: usageHeight,
       height: overviewHeight,
+    });
+    */
+
+    this.wrapper.css({
+      bottom: 60,
+      height: 250,
     });
   },
 };
 
 // run the initiliazer with a self-executing function
 (() => {
-  FastmailCalendarOverview.init();
+  // delay initial action for fastmail to initialize
+  setTimeout(() => {
+    FastmailCalendarOverview.init();
+  }, 500);
 })();

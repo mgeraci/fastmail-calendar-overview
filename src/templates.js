@@ -1,7 +1,8 @@
 import template from 'lodash/template';
+import each from 'lodash/each';
 
 export default {
-  make() {
+  init() {
     this.wrapper = template(this.wrapperSrc());
     this.day = template(this.daySrc());
     this.event = template(this.eventSrc());
@@ -10,7 +11,7 @@ export default {
   wrapperSrc() {
     return `\
 <ul id='fastmail-calendar-overview-wrapper'>
-<% _.each(events, function(day) { %>
+<% each(events, function(day) { %>
   ${this.daySrc()}
 <% }); %>
 </ul>\
@@ -23,7 +24,7 @@ export default {
 <h3>
   <%- day.displayDate %>
 </h3>
-<% _.each(day.events, function(event) { %>
+<% each(day.events, function(event) { %>
   ${this.eventSrc()}
 <% }); %>
 </li>\

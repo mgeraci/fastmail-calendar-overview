@@ -2,6 +2,12 @@
 export const TARGET_DIV = '.v-Quota';
 export const USAGE_DIV = '.v-Quota';
 
+export const WRAPPER_ID = 'fastmail-calendar-overview-wrapper';
+
+// height of the calendar area
+export const MAX_HEIGHT = 400;
+export const REFRESH_INTERVAL = 1000 * 60 * 15; // 15 minutes
+
 export const MONTHS = [
   'January',
   'February',
