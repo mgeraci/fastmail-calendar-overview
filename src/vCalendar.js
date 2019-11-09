@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import RRule from 'rrule';
 import reject from 'lodash/reject'; // TODO replace with native filter
 import groupBy from 'lodash/groupBy';
@@ -7,7 +5,6 @@ import sortBy from 'lodash/sortBy';
 
 import {
   MONTHS,
-  DAYS,
   DAYS_SHORT,
 } from './constants';
 
@@ -16,9 +13,8 @@ export default {
   recurringCount: 5,
 
   // given data from a calendar url, make an array of events
-  parse(data, calendar){
+  parse(data, calendar) {
     const lines = data.split('\n');
-    let inEvent = false;
     const events = [];
     let event = {};
     this.now = new Date();
@@ -31,26 +27,24 @@ export default {
     // offset is in hours, so convert
     this.offset = this.now.getTimezoneOffset() * -1 * 60 * 1000;
 
-    for (let line of Array.from(lines)) {
+    Array.from(lines).forEach((line) => {
       // all fields
-      for (let fieldName of Object.keys(this.fields || {})) {
+      Object.keys(this.fields || {}).forEach((fieldName) => {
         const fieldKey = this.fields[fieldName];
+
         if (this.isLine(line, fieldName)) {
           event[fieldKey] = this.getContent(line);
         }
-      }
+      });
 
       // start an event
       if (this.isLine(line, 'BEGIN:VEVENT')) {
-        inEvent = true;
         event = {};
         event.calendar = calendar;
       }
 
       // finish and commit an event
       if (this.isLine(line, 'END:VEVENT')) {
-        inEvent = false;
-
         this.processDateFields(event);
 
         // kill bad descriptions
@@ -64,7 +58,7 @@ export default {
           // zulu time)
           // timestamp = event.startTimestamp + @offset
           const timestamp = event.startTimestamp;
-          let date = new Date(timestamp);
+          const date = new Date(timestamp);
 
           const year = date.getFullYear();
           const month = this.stringPadNumber(date.getMonth() + 1);
@@ -84,24 +78,27 @@ export default {
           // get a set of applicable events for this rule in the given time frame
           // (e.g., from now until a month from now)
           const ruleStartTime = new Date(this.now.getTime() - (1000 * 60 * 60 * 24));
-          const eventDates = rule.between(ruleStartTime, new Date(this.now.getTime() + this.distance));
+          const eventDates = rule.between(
+            ruleStartTime,
+            new Date(this.now.getTime() + this.distance),
+          );
 
-          for (date of Array.from(eventDates)) {
-            const eventDate = new Date(date);
+          Array.from(eventDates).forEach((eventDateString) => {
+            const eventDate = new Date(eventDateString);
 
             // make a new instance of the recurring event, but delete the non-
             // applicable fields, and replace the start with this instance's
-            const eventInstance = Object.assign({}, event);
+            const eventInstance = { ...event };
 
-            delete(eventInstance.startTime);
-            delete(eventInstance.endTime);
-            delete(eventInstance.endTimestamp);
+            delete eventInstance.startTime;
+            delete eventInstance.endTime;
+            delete eventInstance.endTimestamp;
 
             eventInstance.startTimestamp = eventDate.getTime();
 
             this.addDateInfo(eventInstance);
             events.push(eventInstance);
-          }
+          });
 
         // if it's an all-day event, just check the date bucket, not the time
         } else if (event.allDay && (event.dateBucket === nowDateBucket)) {
@@ -112,22 +109,22 @@ export default {
           events.push(event);
         }
       }
-    }
+    });
 
     return events;
   },
 
   // given an array of events, return a sorted array of objects with event info
   // and events (sorted by event start time)
-  groupEvents(events){
+  groupEvents(events) {
     let res = [];
 
     // get the dateBucket style time and reject ones lower than today
-    const nowDateBucket = parseInt(this.getNowDateBucket(), '10');
-    events = reject(events, e => parseInt(e.dateBucket, 10) < nowDateBucket);
+    const nowDateBucket = parseInt(this.getNowDateBucket(), 10);
+    events = reject(events, (e) => parseInt(e.dateBucket, 10) < nowDateBucket);
     events = groupBy(events, 'dateBucket');
 
-    for (let day in events) {
+    Object.keys(events).forEach((day) => {
       let dayEvents = events[day];
       const theseEvents = dayEvents;
       dayEvents = {};
@@ -136,7 +133,7 @@ export default {
       dayEvents.sortDate = dayEvents.events[0].dateBucket;
 
       // sort the events by allDay, then start time
-      dayEvents.events = dayEvents.events.sort(function(a, b){
+      dayEvents.events = dayEvents.events.sort((a, b) => {
         if (a.allDay && b.allDay) {
           return a.summary > b.summary;
         } else if (a.allDay && !b.allDay) {
@@ -151,7 +148,7 @@ export default {
       });
 
       res.push(dayEvents);
-    }
+    });
 
     res = sortBy(res, 'sortDate');
 
@@ -160,8 +157,8 @@ export default {
 
   // for each of `startTime` and `endTime`, convert the vcal-format timestamp to
   // a unix timestamp, and generate a 'pretty' time for display.
-  processDateFields(event){
-    for (let field of ['start', 'end']) {
+  processDateFields(event) {
+    ['start', 'end'].forEach((field) => {
       const time = event[`${field}Time`];
 
       const parsedTime = this.parseDate(time);
@@ -169,21 +166,22 @@ export default {
       // if the `allDay` flag is set, don't try to parse the end time, just set
       // it to be a day later
       if (parsedTime.allDay) {
-        event['startTimestamp'] = this.generateTimestamp(parsedTime);
-        event['endTimestamp'] = event['startTimestamp'] + 86400000;
+        event.startTimestamp = this.generateTimestamp(parsedTime);
+        event.endTimestamp = event.startTimestamp + 86400000;
         event.allDay = true;
-        break;
+        return;
       }
 
       if (time) {
         event[`${field}Timestamp`] = parsedTime;
       }
-    }
+    });
 
     // if there's a start and end timestamp, calculate the duration
     if (event.startTimestamp && event.endTimestamp) {
       const durationMilliseconds = event.endTimestamp - event.startTimestamp;
       let durationHours = durationMilliseconds / 3600000;
+
       if (durationHours === 24) {
         durationHours = 'All day';
       } else {
@@ -205,7 +203,7 @@ export default {
     }
   },
 
-  addDateInfo(event){
+  addDateInfo(event) {
     const eventDateObj = new Date(event.startTimestamp);
 
     const year = eventDateObj.getFullYear();
@@ -231,24 +229,26 @@ export default {
 
     // add a time, or 'all day'
     if (event.allDay) {
-      return event.timeString = false;
-    } else {
-      const hours = eventDateObj.getHours();
-      const minutes = eventDateObj.getMinutes();
-
-      return event.timeString = `${this.stringPadNumber(hours)}:${this.stringPadNumber(minutes)}`;
+      event.timeString = false;
+      return;
     }
+
+    const hours = eventDateObj.getHours();
+    const minutes = eventDateObj.getMinutes();
+
+    event.timeString = `${this.stringPadNumber(hours)}:${this.stringPadNumber(minutes)}`;
   },
 
-  stringPadNumber(num){
+  stringPadNumber(num) {
     if (num < 10) {
       return `0${num}`;
-    } else {
-      return num;
     }
+
+    return num;
   },
 
-  parseDate(dateString){
+  parseDate(_dateString) {
+    let dateString = `${_dateString}`;
     let date;
     const res = {};
 
@@ -274,7 +274,7 @@ export default {
     }
 
     dateString = dateString.split('T');
-    date = dateString[0];
+    [date] = dateString;
     const time = dateString[1];
 
     res.year = date.slice(0, 4);
@@ -289,7 +289,7 @@ export default {
     // if the time section ends with a `Z`, that indicates Zulu time, aka GMT. so
     // convert to local time.
     if (time[6] === 'Z') {
-      timestamp = timestamp + this.offset;
+      timestamp += this.offset;
     }
 
     return timestamp;
@@ -297,18 +297,17 @@ export default {
 
   // generate a unix timestamp
   generateTimestamp(params) {
-    let timestamp;
     const timestampUTC = new Date(
       params.year,
-      params.month - 1, // month is 0-indexed. jackasses.
+      params.month - 1, // month is 0-indexed
       params.day,
       params.hour,
       params.minute,
-      params.second
+      params.second,
     );
 
     // convert the timestamp to the correct hour for our timezone
-    return timestamp = timestampUTC.getTime();
+    return timestampUTC.getTime();
   },
 
   // get a date object representing the start of a day
@@ -328,13 +327,13 @@ export default {
 
   // a list of fields to extract
   fields: {
-    'UID': 'id',
-    'SUMMARY': 'summary',
-    'DESCRIPTION': 'description',
-    'LOCATION': 'location',
-    'DTSTART': 'startTime',
-    'DTEND': 'endTime',
-    'RRULE': 'rrule'
+    UID: 'id',
+    SUMMARY: 'summary',
+    DESCRIPTION: 'description',
+    LOCATION: 'location',
+    DTSTART: 'startTime',
+    DTEND: 'endTime',
+    RRULE: 'rrule',
   },
 
   // given a line of text and a search string, return a boolean for if the search
@@ -352,5 +351,5 @@ export default {
 
   getNowDateBucket() {
     return `${this.now.getFullYear()}${this.stringPadNumber(this.now.getMonth() + 1)}${this.stringPadNumber(this.now.getDate())}`;
-  }
+  },
 };
