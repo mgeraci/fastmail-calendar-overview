@@ -158,9 +158,8 @@ export default {
   // for each of `startTime` and `endTime`, convert the vcal-format timestamp to
   // a unix timestamp, and generate a 'pretty' time for display.
   processDateFields(event) {
-    ['start', 'end'].forEach((field) => {
+    ['start', 'end'].some((field) => {
       const time = event[`${field}Time`];
-
       const parsedTime = this.parseDate(time);
 
       // if the `allDay` flag is set, don't try to parse the end time, just set
@@ -169,7 +168,11 @@ export default {
         event.startTimestamp = this.generateTimestamp(parsedTime);
         event.endTimestamp = event.startTimestamp + 86400000;
         event.allDay = true;
-        return;
+
+        // returning true short circuits the rest of the `some` loop above
+        // (since we don't want to calculate separate end times for all-day
+        // events)
+        return true;
       }
 
       if (time) {
