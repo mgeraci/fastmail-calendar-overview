@@ -1,81 +1,70 @@
-import template from 'lodash/template';
-import each from 'lodash/each';
+/* global document */
 
 export default {
-  init() {
-    this.wrapper = template(this.wrapperSrc());
-    this.day = template(this.daySrc());
-    this.event = template(this.eventSrc());
+  wrapper(days) {
+    const res = document.createElement('ul');
+    res.id = 'fastmail-calendar-overview-wrapper';
+    res.innerHTML = days.map((day) => this.day(day)).join('');
+
+    return res;
   },
 
-  wrapperSrc() {
-    return `\
-<ul id='fastmail-calendar-overview-wrapper'>
-<% each(events, function(day) { %>
-  ${this.daySrc()}
-<% }); %>
-</ul>\
-`;
+  day(day) {
+    return `
+      <li class='fastmail-calendar-overview-event'>
+        <h3>${day.displayDate}</h3>
+        ${day.events.map((event) => this.event(event)).join('')}
+      </li>
+    `;
   },
 
-  daySrc() {
-    return `\
-<li class='fastmail-calendar-overview-event'>
-<h3>
-  <%- day.displayDate %>
-</h3>
-<% each(day.events, function(event) { %>
-  ${this.eventSrc()}
-<% }); %>
-</li>\
-`;
-  },
+  event(event) {
+    return `
+      <div class='event'>
+        ${event.timeString ? `
+          <span class='time'>
+            ${event.timeString}
+          </span>
+        ` : ''}
 
-  eventSrc() {
-    return `\
-<div class='event'>
-<% if (event.timeString) { %>
-  <span class='time'>
-    <%- event.timeString %>
-  </span>
-<% } %>
-<%- event.summary %>
-<div class='details'>
+        ${event.summary}
 
-  <h3>
-    <%- event.summary %>
-  </h3>
+        <div class='details'>
+          <h3>${event.summary}</h3>
 
-  <% if (event.durationHours) { %>
-    <span class='duration'>
-      <%- event.durationHours %>
-    </span>
-  <% } %>
+          ${event.durationHours ? `
+            <span class='duration'>
+              ${event.durationHours}
+            </span>
+          ` : ''}
 
-  <% if (event.description) { %>
-    <span class='description'>
-      <%= event.description %>
-    </span>
-  <% } %>
+          ${event.description ? `
+            <span class='description'>
+              ${event.description}
+            </span>
+          ` : ''}
 
-  <% if (event.location) { %>
-    <span class='location'>
-      <%- event.location %>
-      <br>
-      <a target='_blank' href='http://maps.google.com/maps?f=q&hl=en&iwloc=addr&q=<%- event.location %>'>
-        map
-      </a>
-    </span>
-  <% } %>
+          ${event.location ? `
+            <span class='location'>
+              ${event.location}
+              <br>
+              <a
+                target='_blank'
+                href='http://maps.google.com/maps?f=q&hl=en&iwloc=addr&q=${event.location}'
+              >
+                map
+              </a>
+            </span>
+          ` : ''}
 
-  <% if (event.calendar) { %>
-    <span class='calendar'>
-      calendar: <%= event.calendar %>
-    </span>
-  <% } %>
+          ${event.calendar ? `
+            <span class='calendar'>
+              calendar: ${event.calendar}
+            </span>
+          ` : ''}
 
-</div>
-</div>\
-`;
+        </div>
+      </div>
+    `;
   },
 };

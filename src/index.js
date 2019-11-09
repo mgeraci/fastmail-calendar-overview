@@ -35,7 +35,7 @@ const FastmailCalendarOverview = {
   },
 
   getTargetDiv() {
-    return document.getElementById(TARGET_DIV).parentNode;
+    return document.querySelectorAll(TARGET_DIV)[0].parentNode;
   },
 
   fetchCalendars() {
@@ -56,20 +56,16 @@ const FastmailCalendarOverview = {
 
     events = vCalendar.groupEvents(events);
 
-    console.log('Fastmail Calendar Overview, events:', events); // eslint-disable-line
+    console.log('Fastmail Calendar Overview, grouped events:', events); // eslint-disable-line
 
     return Promise.resolve(events);
   },
 
   addMarkup(events) {
-    // prepare the underscore templates for use in the dom
-    Templates.init();
-
     this.wrapper = document.getElementById(WRAPPER_ID);
-    const newContent = Templates.wrapper({ events });
-    console.log(newContent);
+    const newContent = Templates.wrapper(events);
 
-    if (this.wrapper.length) {
+    if (this.wrapper) {
       this.wrapper.innerHTML = newContent;
     } else {
       this.getTargetDiv().appendChild(newContent);
@@ -87,7 +83,7 @@ const FastmailCalendarOverview = {
     const columnHeight = this.getTargetDiv().height();
     const lastColumnElement = $('.v-Sources-group');
     const lastElementBottom = lastColumnElement.offset().top + lastColumnElement.outerHeight();
-    const usageHeight = $(USAGE_DIV).outerHeight();
+    const usageHeight = document.querySelectorAll(USAGE_DIV)[0].outerHeight();
     const margin = 20;
 
     let overviewHeight = columnHeight - lastElementBottom - usageHeight - margin;
@@ -101,11 +97,6 @@ const FastmailCalendarOverview = {
       height: overviewHeight,
     });
     */
-
-    this.wrapper.css({
-      bottom: 60,
-      height: 250,
-    });
   },
 };
 

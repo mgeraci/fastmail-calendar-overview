@@ -240,17 +240,6 @@ eval("/**\n * A specialized version of `baseAggregator` for arrays.\n *\n * @pri
 
 /***/ }),
 
-/***/ "./node_modules/lodash/_arrayEach.js":
-/*!*******************************************!*\
-  !*** ./node_modules/lodash/_arrayEach.js ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("/**\n * A specialized version of `_.forEach` for arrays without support for\n * iteratee shorthands.\n *\n * @private\n * @param {Array} [array] The array to iterate over.\n * @param {Function} iteratee The function invoked per iteration.\n * @returns {Array} Returns `array`.\n */\nfunction arrayEach(array, iteratee) {\n  var index = -1,\n      length = array == null ? 0 : array.length;\n\n  while (++index < length) {\n    if (iteratee(array[index], index, array) === false) {\n      break;\n    }\n  }\n  return array;\n}\n\nmodule.exports = arrayEach;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/_arrayEach.js?");
-
-/***/ }),
-
 /***/ "./node_modules/lodash/_arrayFilter.js":
 /*!*********************************************!*\
   !*** ./node_modules/lodash/_arrayFilter.js ***!
@@ -303,17 +292,6 @@ eval("/**\n * Appends the elements of `values` to `array`.\n *\n * @private\n * 
 /***/ (function(module, exports) {
 
 eval("/**\n * A specialized version of `_.some` for arrays without support for iteratee\n * shorthands.\n *\n * @private\n * @param {Array} [array] The array to iterate over.\n * @param {Function} predicate The function invoked per iteration.\n * @returns {boolean} Returns `true` if any element passes the predicate check,\n *  else `false`.\n */\nfunction arraySome(array, predicate) {\n  var index = -1,\n      length = array == null ? 0 : array.length;\n\n  while (++index < length) {\n    if (predicate(array[index], index, array)) {\n      return true;\n    }\n  }\n  return false;\n}\n\nmodule.exports = arraySome;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/_arraySome.js?");
-
-/***/ }),
-
-/***/ "./node_modules/lodash/_assignValue.js":
-/*!*********************************************!*\
-  !*** ./node_modules/lodash/_assignValue.js ***!
-  \*********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var baseAssignValue = __webpack_require__(/*! ./_baseAssignValue */ \"./node_modules/lodash/_baseAssignValue.js\"),\n    eq = __webpack_require__(/*! ./eq */ \"./node_modules/lodash/eq.js\");\n\n/** Used for built-in method references. */\nvar objectProto = Object.prototype;\n\n/** Used to check objects for own properties. */\nvar hasOwnProperty = objectProto.hasOwnProperty;\n\n/**\n * Assigns `value` to `key` of `object` if the existing value is not equivalent\n * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)\n * for equality comparisons.\n *\n * @private\n * @param {Object} object The object to modify.\n * @param {string} key The key of the property to assign.\n * @param {*} value The value to assign.\n */\nfunction assignValue(object, key, value) {\n  var objValue = object[key];\n  if (!(hasOwnProperty.call(object, key) && eq(objValue, value)) ||\n      (value === undefined && !(key in object))) {\n    baseAssignValue(object, key, value);\n  }\n}\n\nmodule.exports = assignValue;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/_assignValue.js?");
 
 /***/ }),
 
@@ -537,17 +515,6 @@ eval("var isPrototype = __webpack_require__(/*! ./_isPrototype */ \"./node_modul
 
 /***/ }),
 
-/***/ "./node_modules/lodash/_baseKeysIn.js":
-/*!********************************************!*\
-  !*** ./node_modules/lodash/_baseKeysIn.js ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var isObject = __webpack_require__(/*! ./isObject */ \"./node_modules/lodash/isObject.js\"),\n    isPrototype = __webpack_require__(/*! ./_isPrototype */ \"./node_modules/lodash/_isPrototype.js\"),\n    nativeKeysIn = __webpack_require__(/*! ./_nativeKeysIn */ \"./node_modules/lodash/_nativeKeysIn.js\");\n\n/** Used for built-in method references. */\nvar objectProto = Object.prototype;\n\n/** Used to check objects for own properties. */\nvar hasOwnProperty = objectProto.hasOwnProperty;\n\n/**\n * The base implementation of `_.keysIn` which doesn't treat sparse arrays as dense.\n *\n * @private\n * @param {Object} object The object to query.\n * @returns {Array} Returns the array of property names.\n */\nfunction baseKeysIn(object) {\n  if (!isObject(object)) {\n    return nativeKeysIn(object);\n  }\n  var isProto = isPrototype(object),\n      result = [];\n\n  for (var key in object) {\n    if (!(key == 'constructor' && (isProto || !hasOwnProperty.call(object, key)))) {\n      result.push(key);\n    }\n  }\n  return result;\n}\n\nmodule.exports = baseKeysIn;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/_baseKeysIn.js?");
-
-/***/ }),
-
 /***/ "./node_modules/lodash/_baseMap.js":
 /*!*****************************************!*\
   !*** ./node_modules/lodash/_baseMap.js ***!
@@ -611,17 +578,6 @@ eval("/**\n * The base implementation of `_.property` without support for deep p
 /***/ (function(module, exports, __webpack_require__) {
 
 eval("var baseGet = __webpack_require__(/*! ./_baseGet */ \"./node_modules/lodash/_baseGet.js\");\n\n/**\n * A specialized version of `baseProperty` which supports deep paths.\n *\n * @private\n * @param {Array|string} path The path of the property to get.\n * @returns {Function} Returns the new accessor function.\n */\nfunction basePropertyDeep(path) {\n  return function(object) {\n    return baseGet(object, path);\n  };\n}\n\nmodule.exports = basePropertyDeep;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/_basePropertyDeep.js?");
-
-/***/ }),
-
-/***/ "./node_modules/lodash/_basePropertyOf.js":
-/*!************************************************!*\
-  !*** ./node_modules/lodash/_basePropertyOf.js ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("/**\n * The base implementation of `_.propertyOf` without support for deep paths.\n *\n * @private\n * @param {Object} object The object to query.\n * @returns {Function} Returns the new accessor function.\n */\nfunction basePropertyOf(object) {\n  return function(key) {\n    return object == null ? undefined : object[key];\n  };\n}\n\nmodule.exports = basePropertyOf;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/_basePropertyOf.js?");
 
 /***/ }),
 
@@ -691,17 +647,6 @@ eval("/**\n * The base implementation of `_.unary` without support for storing m
 
 /***/ }),
 
-/***/ "./node_modules/lodash/_baseValues.js":
-/*!********************************************!*\
-  !*** ./node_modules/lodash/_baseValues.js ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var arrayMap = __webpack_require__(/*! ./_arrayMap */ \"./node_modules/lodash/_arrayMap.js\");\n\n/**\n * The base implementation of `_.values` and `_.valuesIn` which creates an\n * array of `object` property values corresponding to the property names\n * of `props`.\n *\n * @private\n * @param {Object} object The object to query.\n * @param {Array} props The property names to get values for.\n * @returns {Object} Returns the array of property values.\n */\nfunction baseValues(object, props) {\n  return arrayMap(props, function(key) {\n    return object[key];\n  });\n}\n\nmodule.exports = baseValues;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/_baseValues.js?");
-
-/***/ }),
-
 /***/ "./node_modules/lodash/_cacheHas.js":
 /*!******************************************!*\
   !*** ./node_modules/lodash/_cacheHas.js ***!
@@ -710,17 +655,6 @@ eval("var arrayMap = __webpack_require__(/*! ./_arrayMap */ \"./node_modules/lod
 /***/ (function(module, exports) {
 
 eval("/**\n * Checks if a `cache` value for `key` exists.\n *\n * @private\n * @param {Object} cache The cache to query.\n * @param {string} key The key of the entry to check.\n * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.\n */\nfunction cacheHas(cache, key) {\n  return cache.has(key);\n}\n\nmodule.exports = cacheHas;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/_cacheHas.js?");
-
-/***/ }),
-
-/***/ "./node_modules/lodash/_castFunction.js":
-/*!**********************************************!*\
-  !*** ./node_modules/lodash/_castFunction.js ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var identity = __webpack_require__(/*! ./identity */ \"./node_modules/lodash/identity.js\");\n\n/**\n * Casts `value` to `identity` if it's not a function.\n *\n * @private\n * @param {*} value The value to inspect.\n * @returns {Function} Returns cast function.\n */\nfunction castFunction(value) {\n  return typeof value == 'function' ? value : identity;\n}\n\nmodule.exports = castFunction;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/_castFunction.js?");
 
 /***/ }),
 
@@ -757,17 +691,6 @@ eval("var compareAscending = __webpack_require__(/*! ./_compareAscending */ \"./
 
 /***/ }),
 
-/***/ "./node_modules/lodash/_copyObject.js":
-/*!********************************************!*\
-  !*** ./node_modules/lodash/_copyObject.js ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var assignValue = __webpack_require__(/*! ./_assignValue */ \"./node_modules/lodash/_assignValue.js\"),\n    baseAssignValue = __webpack_require__(/*! ./_baseAssignValue */ \"./node_modules/lodash/_baseAssignValue.js\");\n\n/**\n * Copies properties of `source` to `object`.\n *\n * @private\n * @param {Object} source The object to copy properties from.\n * @param {Array} props The property identifiers to copy.\n * @param {Object} [object={}] The object to copy properties to.\n * @param {Function} [customizer] The function to customize copied values.\n * @returns {Object} Returns `object`.\n */\nfunction copyObject(source, props, object, customizer) {\n  var isNew = !object;\n  object || (object = {});\n\n  var index = -1,\n      length = props.length;\n\n  while (++index < length) {\n    var key = props[index];\n\n    var newValue = customizer\n      ? customizer(object[key], source[key], key, object, source)\n      : undefined;\n\n    if (newValue === undefined) {\n      newValue = source[key];\n    }\n    if (isNew) {\n      baseAssignValue(object, key, newValue);\n    } else {\n      assignValue(object, key, newValue);\n    }\n  }\n  return object;\n}\n\nmodule.exports = copyObject;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/_copyObject.js?");
-
-/***/ }),
-
 /***/ "./node_modules/lodash/_coreJsData.js":
 /*!********************************************!*\
   !*** ./node_modules/lodash/_coreJsData.js ***!
@@ -790,17 +713,6 @@ eval("var arrayAggregator = __webpack_require__(/*! ./_arrayAggregator */ \"./no
 
 /***/ }),
 
-/***/ "./node_modules/lodash/_createAssigner.js":
-/*!************************************************!*\
-  !*** ./node_modules/lodash/_createAssigner.js ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var baseRest = __webpack_require__(/*! ./_baseRest */ \"./node_modules/lodash/_baseRest.js\"),\n    isIterateeCall = __webpack_require__(/*! ./_isIterateeCall */ \"./node_modules/lodash/_isIterateeCall.js\");\n\n/**\n * Creates a function like `_.assign`.\n *\n * @private\n * @param {Function} assigner The function to assign values.\n * @returns {Function} Returns the new assigner function.\n */\nfunction createAssigner(assigner) {\n  return baseRest(function(object, sources) {\n    var index = -1,\n        length = sources.length,\n        customizer = length > 1 ? sources[length - 1] : undefined,\n        guard = length > 2 ? sources[2] : undefined;\n\n    customizer = (assigner.length > 3 && typeof customizer == 'function')\n      ? (length--, customizer)\n      : undefined;\n\n    if (guard && isIterateeCall(sources[0], sources[1], guard)) {\n      customizer = length < 3 ? undefined : customizer;\n      length = 1;\n    }\n    object = Object(object);\n    while (++index < length) {\n      var source = sources[index];\n      if (source) {\n        assigner(object, source, index, customizer);\n      }\n    }\n    return object;\n  });\n}\n\nmodule.exports = createAssigner;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/_createAssigner.js?");
-
-/***/ }),
-
 /***/ "./node_modules/lodash/_createBaseEach.js":
 /*!************************************************!*\
   !*** ./node_modules/lodash/_createBaseEach.js ***!
@@ -820,17 +732,6 @@ eval("var isArrayLike = __webpack_require__(/*! ./isArrayLike */ \"./node_module
 /***/ (function(module, exports) {
 
 eval("/**\n * Creates a base function for methods like `_.forIn` and `_.forOwn`.\n *\n * @private\n * @param {boolean} [fromRight] Specify iterating from right to left.\n * @returns {Function} Returns the new base function.\n */\nfunction createBaseFor(fromRight) {\n  return function(object, iteratee, keysFunc) {\n    var index = -1,\n        iterable = Object(object),\n        props = keysFunc(object),\n        length = props.length;\n\n    while (length--) {\n      var key = props[fromRight ? length : ++index];\n      if (iteratee(iterable[key], key, iterable) === false) {\n        break;\n      }\n    }\n    return object;\n  };\n}\n\nmodule.exports = createBaseFor;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/_createBaseFor.js?");
-
-/***/ }),
-
-/***/ "./node_modules/lodash/_customDefaultsAssignIn.js":
-/*!********************************************************!*\
-  !*** ./node_modules/lodash/_customDefaultsAssignIn.js ***!
-  \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var eq = __webpack_require__(/*! ./eq */ \"./node_modules/lodash/eq.js\");\n\n/** Used for built-in method references. */\nvar objectProto = Object.prototype;\n\n/** Used to check objects for own properties. */\nvar hasOwnProperty = objectProto.hasOwnProperty;\n\n/**\n * Used by `_.defaults` to customize its `_.assignIn` use to assign properties\n * of source objects to the destination object for all destination properties\n * that resolve to `undefined`.\n *\n * @private\n * @param {*} objValue The destination value.\n * @param {*} srcValue The source value.\n * @param {string} key The key of the property to assign.\n * @param {Object} object The parent object of `objValue`.\n * @returns {*} Returns the value to assign.\n */\nfunction customDefaultsAssignIn(objValue, srcValue, key, object) {\n  if (objValue === undefined ||\n      (eq(objValue, objectProto[key]) && !hasOwnProperty.call(object, key))) {\n    return srcValue;\n  }\n  return objValue;\n}\n\nmodule.exports = customDefaultsAssignIn;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/_customDefaultsAssignIn.js?");
 
 /***/ }),
 
@@ -875,28 +776,6 @@ eval("var Symbol = __webpack_require__(/*! ./_Symbol */ \"./node_modules/lodash/
 /***/ (function(module, exports, __webpack_require__) {
 
 eval("var getAllKeys = __webpack_require__(/*! ./_getAllKeys */ \"./node_modules/lodash/_getAllKeys.js\");\n\n/** Used to compose bitmasks for value comparisons. */\nvar COMPARE_PARTIAL_FLAG = 1;\n\n/** Used for built-in method references. */\nvar objectProto = Object.prototype;\n\n/** Used to check objects for own properties. */\nvar hasOwnProperty = objectProto.hasOwnProperty;\n\n/**\n * A specialized version of `baseIsEqualDeep` for objects with support for\n * partial deep comparisons.\n *\n * @private\n * @param {Object} object The object to compare.\n * @param {Object} other The other object to compare.\n * @param {number} bitmask The bitmask flags. See `baseIsEqual` for more details.\n * @param {Function} customizer The function to customize comparisons.\n * @param {Function} equalFunc The function to determine equivalents of values.\n * @param {Object} stack Tracks traversed `object` and `other` objects.\n * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.\n */\nfunction equalObjects(object, other, bitmask, customizer, equalFunc, stack) {\n  var isPartial = bitmask & COMPARE_PARTIAL_FLAG,\n      objProps = getAllKeys(object),\n      objLength = objProps.length,\n      othProps = getAllKeys(other),\n      othLength = othProps.length;\n\n  if (objLength != othLength && !isPartial) {\n    return false;\n  }\n  var index = objLength;\n  while (index--) {\n    var key = objProps[index];\n    if (!(isPartial ? key in other : hasOwnProperty.call(other, key))) {\n      return false;\n    }\n  }\n  // Assume cyclic values are equal.\n  var stacked = stack.get(object);\n  if (stacked && stack.get(other)) {\n    return stacked == other;\n  }\n  var result = true;\n  stack.set(object, other);\n  stack.set(other, object);\n\n  var skipCtor = isPartial;\n  while (++index < objLength) {\n    key = objProps[index];\n    var objValue = object[key],\n        othValue = other[key];\n\n    if (customizer) {\n      var compared = isPartial\n        ? customizer(othValue, objValue, key, other, object, stack)\n        : customizer(objValue, othValue, key, object, other, stack);\n    }\n    // Recursively compare objects (susceptible to call stack limits).\n    if (!(compared === undefined\n          ? (objValue === othValue || equalFunc(objValue, othValue, bitmask, customizer, stack))\n          : compared\n        )) {\n      result = false;\n      break;\n    }\n    skipCtor || (skipCtor = key == 'constructor');\n  }\n  if (result && !skipCtor) {\n    var objCtor = object.constructor,\n        othCtor = other.constructor;\n\n    // Non `Object` object instances with different constructors are not equal.\n    if (objCtor != othCtor &&\n        ('constructor' in object && 'constructor' in other) &&\n        !(typeof objCtor == 'function' && objCtor instanceof objCtor &&\n          typeof othCtor == 'function' && othCtor instanceof othCtor)) {\n      result = false;\n    }\n  }\n  stack['delete'](object);\n  stack['delete'](other);\n  return result;\n}\n\nmodule.exports = equalObjects;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/_equalObjects.js?");
-
-/***/ }),
-
-/***/ "./node_modules/lodash/_escapeHtmlChar.js":
-/*!************************************************!*\
-  !*** ./node_modules/lodash/_escapeHtmlChar.js ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var basePropertyOf = __webpack_require__(/*! ./_basePropertyOf */ \"./node_modules/lodash/_basePropertyOf.js\");\n\n/** Used to map characters to HTML entities. */\nvar htmlEscapes = {\n  '&': '&amp;',\n  '<': '&lt;',\n  '>': '&gt;',\n  '\"': '&quot;',\n  \"'\": '&#39;'\n};\n\n/**\n * Used by `_.escape` to convert characters to HTML entities.\n *\n * @private\n * @param {string} chr The matched character to escape.\n * @returns {string} Returns the escaped character.\n */\nvar escapeHtmlChar = basePropertyOf(htmlEscapes);\n\nmodule.exports = escapeHtmlChar;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/_escapeHtmlChar.js?");
-
-/***/ }),
-
-/***/ "./node_modules/lodash/_escapeStringChar.js":
-/*!**************************************************!*\
-  !*** ./node_modules/lodash/_escapeStringChar.js ***!
-  \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("/** Used to escape characters for inclusion in compiled string literals. */\nvar stringEscapes = {\n  '\\\\': '\\\\',\n  \"'\": \"'\",\n  '\\n': 'n',\n  '\\r': 'r',\n  '\\u2028': 'u2028',\n  '\\u2029': 'u2029'\n};\n\n/**\n * Used by `_.template` to escape characters for inclusion in compiled string literals.\n *\n * @private\n * @param {string} chr The matched character to escape.\n * @returns {string} Returns the escaped character.\n */\nfunction escapeStringChar(chr) {\n  return '\\\\' + stringEscapes[chr];\n}\n\nmodule.exports = escapeStringChar;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/_escapeStringChar.js?");
 
 /***/ }),
 
@@ -952,17 +831,6 @@ eval("var isStrictComparable = __webpack_require__(/*! ./_isStrictComparable */ 
 /***/ (function(module, exports, __webpack_require__) {
 
 eval("var baseIsNative = __webpack_require__(/*! ./_baseIsNative */ \"./node_modules/lodash/_baseIsNative.js\"),\n    getValue = __webpack_require__(/*! ./_getValue */ \"./node_modules/lodash/_getValue.js\");\n\n/**\n * Gets the native function at `key` of `object`.\n *\n * @private\n * @param {Object} object The object to query.\n * @param {string} key The key of the method to get.\n * @returns {*} Returns the function if it's native, else `undefined`.\n */\nfunction getNative(object, key) {\n  var value = getValue(object, key);\n  return baseIsNative(value) ? value : undefined;\n}\n\nmodule.exports = getNative;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/_getNative.js?");
-
-/***/ }),
-
-/***/ "./node_modules/lodash/_getPrototype.js":
-/*!**********************************************!*\
-  !*** ./node_modules/lodash/_getPrototype.js ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var overArg = __webpack_require__(/*! ./_overArg */ \"./node_modules/lodash/_overArg.js\");\n\n/** Built-in value references. */\nvar getPrototype = overArg(Object.getPrototypeOf, Object);\n\nmodule.exports = getPrototype;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/_getPrototype.js?");
 
 /***/ }),
 
@@ -1329,17 +1197,6 @@ eval("var overArg = __webpack_require__(/*! ./_overArg */ \"./node_modules/lodas
 
 /***/ }),
 
-/***/ "./node_modules/lodash/_nativeKeysIn.js":
-/*!**********************************************!*\
-  !*** ./node_modules/lodash/_nativeKeysIn.js ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("/**\n * This function is like\n * [`Object.keys`](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)\n * except that it includes inherited enumerable properties.\n *\n * @private\n * @param {Object} object The object to query.\n * @returns {Array} Returns the array of property names.\n */\nfunction nativeKeysIn(object) {\n  var result = [];\n  if (object != null) {\n    for (var key in Object(object)) {\n      result.push(key);\n    }\n  }\n  return result;\n}\n\nmodule.exports = nativeKeysIn;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/_nativeKeysIn.js?");
-
-/***/ }),
-
 /***/ "./node_modules/lodash/_nodeUtil.js":
 /*!******************************************!*\
   !*** ./node_modules/lodash/_nodeUtil.js ***!
@@ -1381,39 +1238,6 @@ eval("/**\n * Creates a unary function that invokes `func` with its argument tra
 /***/ (function(module, exports, __webpack_require__) {
 
 eval("var apply = __webpack_require__(/*! ./_apply */ \"./node_modules/lodash/_apply.js\");\n\n/* Built-in method references for those with the same name as other `lodash` methods. */\nvar nativeMax = Math.max;\n\n/**\n * A specialized version of `baseRest` which transforms the rest array.\n *\n * @private\n * @param {Function} func The function to apply a rest parameter to.\n * @param {number} [start=func.length-1] The start position of the rest parameter.\n * @param {Function} transform The rest array transform.\n * @returns {Function} Returns the new function.\n */\nfunction overRest(func, start, transform) {\n  start = nativeMax(start === undefined ? (func.length - 1) : start, 0);\n  return function() {\n    var args = arguments,\n        index = -1,\n        length = nativeMax(args.length - start, 0),\n        array = Array(length);\n\n    while (++index < length) {\n      array[index] = args[start + index];\n    }\n    index = -1;\n    var otherArgs = Array(start + 1);\n    while (++index < start) {\n      otherArgs[index] = args[index];\n    }\n    otherArgs[start] = transform(array);\n    return apply(func, this, otherArgs);\n  };\n}\n\nmodule.exports = overRest;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/_overRest.js?");
-
-/***/ }),
-
-/***/ "./node_modules/lodash/_reEscape.js":
-/*!******************************************!*\
-  !*** ./node_modules/lodash/_reEscape.js ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("/** Used to match template delimiters. */\nvar reEscape = /<%-([\\s\\S]+?)%>/g;\n\nmodule.exports = reEscape;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/_reEscape.js?");
-
-/***/ }),
-
-/***/ "./node_modules/lodash/_reEvaluate.js":
-/*!********************************************!*\
-  !*** ./node_modules/lodash/_reEvaluate.js ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("/** Used to match template delimiters. */\nvar reEvaluate = /<%([\\s\\S]+?)%>/g;\n\nmodule.exports = reEvaluate;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/_reEvaluate.js?");
-
-/***/ }),
-
-/***/ "./node_modules/lodash/_reInterpolate.js":
-/*!***********************************************!*\
-  !*** ./node_modules/lodash/_reInterpolate.js ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("/** Used to match template delimiters. */\nvar reInterpolate = /<%=([\\s\\S]+?)%>/g;\n\nmodule.exports = reInterpolate;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/_reInterpolate.js?");
 
 /***/ }),
 
@@ -1571,28 +1395,6 @@ eval("/** Used for built-in method references. */\nvar funcProto = Function.prot
 
 /***/ }),
 
-/***/ "./node_modules/lodash/assignInWith.js":
-/*!*********************************************!*\
-  !*** ./node_modules/lodash/assignInWith.js ***!
-  \*********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var copyObject = __webpack_require__(/*! ./_copyObject */ \"./node_modules/lodash/_copyObject.js\"),\n    createAssigner = __webpack_require__(/*! ./_createAssigner */ \"./node_modules/lodash/_createAssigner.js\"),\n    keysIn = __webpack_require__(/*! ./keysIn */ \"./node_modules/lodash/keysIn.js\");\n\n/**\n * This method is like `_.assignIn` except that it accepts `customizer`\n * which is invoked to produce the assigned values. If `customizer` returns\n * `undefined`, assignment is handled by the method instead. The `customizer`\n * is invoked with five arguments: (objValue, srcValue, key, object, source).\n *\n * **Note:** This method mutates `object`.\n *\n * @static\n * @memberOf _\n * @since 4.0.0\n * @alias extendWith\n * @category Object\n * @param {Object} object The destination object.\n * @param {...Object} sources The source objects.\n * @param {Function} [customizer] The function to customize assigned values.\n * @returns {Object} Returns `object`.\n * @see _.assignWith\n * @example\n *\n * function customizer(objValue, srcValue) {\n *   return _.isUndefined(objValue) ? srcValue : objValue;\n * }\n *\n * var defaults = _.partialRight(_.assignInWith, customizer);\n *\n * defaults({ 'a': 1 }, { 'b': 2 }, { 'a': 3 });\n * // => { 'a': 1, 'b': 2 }\n */\nvar assignInWith = createAssigner(function(object, source, srcIndex, customizer) {\n  copyObject(source, keysIn(source), object, customizer);\n});\n\nmodule.exports = assignInWith;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/assignInWith.js?");
-
-/***/ }),
-
-/***/ "./node_modules/lodash/attempt.js":
-/*!****************************************!*\
-  !*** ./node_modules/lodash/attempt.js ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var apply = __webpack_require__(/*! ./_apply */ \"./node_modules/lodash/_apply.js\"),\n    baseRest = __webpack_require__(/*! ./_baseRest */ \"./node_modules/lodash/_baseRest.js\"),\n    isError = __webpack_require__(/*! ./isError */ \"./node_modules/lodash/isError.js\");\n\n/**\n * Attempts to invoke `func`, returning either the result or the caught error\n * object. Any additional arguments are provided to `func` when it's invoked.\n *\n * @static\n * @memberOf _\n * @since 3.0.0\n * @category Util\n * @param {Function} func The function to attempt.\n * @param {...*} [args] The arguments to invoke `func` with.\n * @returns {*} Returns the `func` result or error object.\n * @example\n *\n * // Avoid throwing errors for invalid selectors.\n * var elements = _.attempt(function(selector) {\n *   return document.querySelectorAll(selector);\n * }, '>_>');\n *\n * if (_.isError(elements)) {\n *   elements = [];\n * }\n */\nvar attempt = baseRest(function(func, args) {\n  try {\n    return apply(func, undefined, args);\n  } catch (e) {\n    return isError(e) ? e : new Error(e);\n  }\n});\n\nmodule.exports = attempt;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/attempt.js?");
-
-/***/ }),
-
 /***/ "./node_modules/lodash/constant.js":
 /*!*****************************************!*\
   !*** ./node_modules/lodash/constant.js ***!
@@ -1604,17 +1406,6 @@ eval("/**\n * Creates a function that returns `value`.\n *\n * @static\n * @memb
 
 /***/ }),
 
-/***/ "./node_modules/lodash/each.js":
-/*!*************************************!*\
-  !*** ./node_modules/lodash/each.js ***!
-  \*************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("module.exports = __webpack_require__(/*! ./forEach */ \"./node_modules/lodash/forEach.js\");\n\n\n//# sourceURL=webpack:///./node_modules/lodash/each.js?");
-
-/***/ }),
-
 /***/ "./node_modules/lodash/eq.js":
 /*!***********************************!*\
   !*** ./node_modules/lodash/eq.js ***!
@@ -1623,28 +1414,6 @@ eval("module.exports = __webpack_require__(/*! ./forEach */ \"./node_modules/lod
 /***/ (function(module, exports) {
 
 eval("/**\n * Performs a\n * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)\n * comparison between two values to determine if they are equivalent.\n *\n * @static\n * @memberOf _\n * @since 4.0.0\n * @category Lang\n * @param {*} value The value to compare.\n * @param {*} other The other value to compare.\n * @returns {boolean} Returns `true` if the values are equivalent, else `false`.\n * @example\n *\n * var object = { 'a': 1 };\n * var other = { 'a': 1 };\n *\n * _.eq(object, object);\n * // => true\n *\n * _.eq(object, other);\n * // => false\n *\n * _.eq('a', 'a');\n * // => true\n *\n * _.eq('a', Object('a'));\n * // => false\n *\n * _.eq(NaN, NaN);\n * // => true\n */\nfunction eq(value, other) {\n  return value === other || (value !== value && other !== other);\n}\n\nmodule.exports = eq;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/eq.js?");
-
-/***/ }),
-
-/***/ "./node_modules/lodash/escape.js":
-/*!***************************************!*\
-  !*** ./node_modules/lodash/escape.js ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var escapeHtmlChar = __webpack_require__(/*! ./_escapeHtmlChar */ \"./node_modules/lodash/_escapeHtmlChar.js\"),\n    toString = __webpack_require__(/*! ./toString */ \"./node_modules/lodash/toString.js\");\n\n/** Used to match HTML entities and HTML characters. */\nvar reUnescapedHtml = /[&<>\"']/g,\n    reHasUnescapedHtml = RegExp(reUnescapedHtml.source);\n\n/**\n * Converts the characters \"&\", \"<\", \">\", '\"', and \"'\" in `string` to their\n * corresponding HTML entities.\n *\n * **Note:** No other characters are escaped. To escape additional\n * characters use a third-party library like [_he_](https://mths.be/he).\n *\n * Though the \">\" character is escaped for symmetry, characters like\n * \">\" and \"/\" don't need escaping in HTML and have no special meaning\n * unless they're part of a tag or unquoted attribute value. See\n * [Mathias Bynens's article](https://mathiasbynens.be/notes/ambiguous-ampersands)\n * (under \"semi-related fun fact\") for more details.\n *\n * When working with HTML you should always\n * [quote attribute values](http://wonko.com/post/html-escaping) to reduce\n * XSS vectors.\n *\n * @static\n * @since 0.1.0\n * @memberOf _\n * @category String\n * @param {string} [string=''] The string to escape.\n * @returns {string} Returns the escaped string.\n * @example\n *\n * _.escape('fred, barney, & pebbles');\n * // => 'fred, barney, &amp; pebbles'\n */\nfunction escape(string) {\n  string = toString(string);\n  return (string && reHasUnescapedHtml.test(string))\n    ? string.replace(reUnescapedHtml, escapeHtmlChar)\n    : string;\n}\n\nmodule.exports = escape;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/escape.js?");
-
-/***/ }),
-
-/***/ "./node_modules/lodash/forEach.js":
-/*!****************************************!*\
-  !*** ./node_modules/lodash/forEach.js ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var arrayEach = __webpack_require__(/*! ./_arrayEach */ \"./node_modules/lodash/_arrayEach.js\"),\n    baseEach = __webpack_require__(/*! ./_baseEach */ \"./node_modules/lodash/_baseEach.js\"),\n    castFunction = __webpack_require__(/*! ./_castFunction */ \"./node_modules/lodash/_castFunction.js\"),\n    isArray = __webpack_require__(/*! ./isArray */ \"./node_modules/lodash/isArray.js\");\n\n/**\n * Iterates over elements of `collection` and invokes `iteratee` for each element.\n * The iteratee is invoked with three arguments: (value, index|key, collection).\n * Iteratee functions may exit iteration early by explicitly returning `false`.\n *\n * **Note:** As with other \"Collections\" methods, objects with a \"length\"\n * property are iterated like arrays. To avoid this behavior use `_.forIn`\n * or `_.forOwn` for object iteration.\n *\n * @static\n * @memberOf _\n * @since 0.1.0\n * @alias each\n * @category Collection\n * @param {Array|Object} collection The collection to iterate over.\n * @param {Function} [iteratee=_.identity] The function invoked per iteration.\n * @returns {Array|Object} Returns `collection`.\n * @see _.forEachRight\n * @example\n *\n * _.forEach([1, 2], function(value) {\n *   console.log(value);\n * });\n * // => Logs `1` then `2`.\n *\n * _.forEach({ 'a': 1, 'b': 2 }, function(value, key) {\n *   console.log(key);\n * });\n * // => Logs 'a' then 'b' (iteration order is not guaranteed).\n */\nfunction forEach(collection, iteratee) {\n  var func = isArray(collection) ? arrayEach : baseEach;\n  return func(collection, castFunction(iteratee));\n}\n\nmodule.exports = forEach;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/forEach.js?");
 
 /***/ }),
 
@@ -1736,17 +1505,6 @@ eval("/* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require
 
 /***/ }),
 
-/***/ "./node_modules/lodash/isError.js":
-/*!****************************************!*\
-  !*** ./node_modules/lodash/isError.js ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var baseGetTag = __webpack_require__(/*! ./_baseGetTag */ \"./node_modules/lodash/_baseGetTag.js\"),\n    isObjectLike = __webpack_require__(/*! ./isObjectLike */ \"./node_modules/lodash/isObjectLike.js\"),\n    isPlainObject = __webpack_require__(/*! ./isPlainObject */ \"./node_modules/lodash/isPlainObject.js\");\n\n/** `Object#toString` result references. */\nvar domExcTag = '[object DOMException]',\n    errorTag = '[object Error]';\n\n/**\n * Checks if `value` is an `Error`, `EvalError`, `RangeError`, `ReferenceError`,\n * `SyntaxError`, `TypeError`, or `URIError` object.\n *\n * @static\n * @memberOf _\n * @since 3.0.0\n * @category Lang\n * @param {*} value The value to check.\n * @returns {boolean} Returns `true` if `value` is an error object, else `false`.\n * @example\n *\n * _.isError(new Error);\n * // => true\n *\n * _.isError(Error);\n * // => false\n */\nfunction isError(value) {\n  if (!isObjectLike(value)) {\n    return false;\n  }\n  var tag = baseGetTag(value);\n  return tag == errorTag || tag == domExcTag ||\n    (typeof value.message == 'string' && typeof value.name == 'string' && !isPlainObject(value));\n}\n\nmodule.exports = isError;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/isError.js?");
-
-/***/ }),
-
 /***/ "./node_modules/lodash/isFunction.js":
 /*!*******************************************!*\
   !*** ./node_modules/lodash/isFunction.js ***!
@@ -1791,17 +1549,6 @@ eval("/**\n * Checks if `value` is object-like. A value is object-like if it's n
 
 /***/ }),
 
-/***/ "./node_modules/lodash/isPlainObject.js":
-/*!**********************************************!*\
-  !*** ./node_modules/lodash/isPlainObject.js ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var baseGetTag = __webpack_require__(/*! ./_baseGetTag */ \"./node_modules/lodash/_baseGetTag.js\"),\n    getPrototype = __webpack_require__(/*! ./_getPrototype */ \"./node_modules/lodash/_getPrototype.js\"),\n    isObjectLike = __webpack_require__(/*! ./isObjectLike */ \"./node_modules/lodash/isObjectLike.js\");\n\n/** `Object#toString` result references. */\nvar objectTag = '[object Object]';\n\n/** Used for built-in method references. */\nvar funcProto = Function.prototype,\n    objectProto = Object.prototype;\n\n/** Used to resolve the decompiled source of functions. */\nvar funcToString = funcProto.toString;\n\n/** Used to check objects for own properties. */\nvar hasOwnProperty = objectProto.hasOwnProperty;\n\n/** Used to infer the `Object` constructor. */\nvar objectCtorString = funcToString.call(Object);\n\n/**\n * Checks if `value` is a plain object, that is, an object created by the\n * `Object` constructor or one with a `[[Prototype]]` of `null`.\n *\n * @static\n * @memberOf _\n * @since 0.8.0\n * @category Lang\n * @param {*} value The value to check.\n * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.\n * @example\n *\n * function Foo() {\n *   this.a = 1;\n * }\n *\n * _.isPlainObject(new Foo);\n * // => false\n *\n * _.isPlainObject([1, 2, 3]);\n * // => false\n *\n * _.isPlainObject({ 'x': 0, 'y': 0 });\n * // => true\n *\n * _.isPlainObject(Object.create(null));\n * // => true\n */\nfunction isPlainObject(value) {\n  if (!isObjectLike(value) || baseGetTag(value) != objectTag) {\n    return false;\n  }\n  var proto = getPrototype(value);\n  if (proto === null) {\n    return true;\n  }\n  var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;\n  return typeof Ctor == 'function' && Ctor instanceof Ctor &&\n    funcToString.call(Ctor) == objectCtorString;\n}\n\nmodule.exports = isPlainObject;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/isPlainObject.js?");
-
-/***/ }),
-
 /***/ "./node_modules/lodash/isSymbol.js":
 /*!*****************************************!*\
   !*** ./node_modules/lodash/isSymbol.js ***!
@@ -1832,17 +1579,6 @@ eval("var baseIsTypedArray = __webpack_require__(/*! ./_baseIsTypedArray */ \"./
 /***/ (function(module, exports, __webpack_require__) {
 
 eval("var arrayLikeKeys = __webpack_require__(/*! ./_arrayLikeKeys */ \"./node_modules/lodash/_arrayLikeKeys.js\"),\n    baseKeys = __webpack_require__(/*! ./_baseKeys */ \"./node_modules/lodash/_baseKeys.js\"),\n    isArrayLike = __webpack_require__(/*! ./isArrayLike */ \"./node_modules/lodash/isArrayLike.js\");\n\n/**\n * Creates an array of the own enumerable property names of `object`.\n *\n * **Note:** Non-object values are coerced to objects. See the\n * [ES spec](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)\n * for more details.\n *\n * @static\n * @since 0.1.0\n * @memberOf _\n * @category Object\n * @param {Object} object The object to query.\n * @returns {Array} Returns the array of property names.\n * @example\n *\n * function Foo() {\n *   this.a = 1;\n *   this.b = 2;\n * }\n *\n * Foo.prototype.c = 3;\n *\n * _.keys(new Foo);\n * // => ['a', 'b'] (iteration order is not guaranteed)\n *\n * _.keys('hi');\n * // => ['0', '1']\n */\nfunction keys(object) {\n  return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);\n}\n\nmodule.exports = keys;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/keys.js?");
-
-/***/ }),
-
-/***/ "./node_modules/lodash/keysIn.js":
-/*!***************************************!*\
-  !*** ./node_modules/lodash/keysIn.js ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var arrayLikeKeys = __webpack_require__(/*! ./_arrayLikeKeys */ \"./node_modules/lodash/_arrayLikeKeys.js\"),\n    baseKeysIn = __webpack_require__(/*! ./_baseKeysIn */ \"./node_modules/lodash/_baseKeysIn.js\"),\n    isArrayLike = __webpack_require__(/*! ./isArrayLike */ \"./node_modules/lodash/isArrayLike.js\");\n\n/**\n * Creates an array of the own and inherited enumerable property names of `object`.\n *\n * **Note:** Non-object values are coerced to objects.\n *\n * @static\n * @memberOf _\n * @since 3.0.0\n * @category Object\n * @param {Object} object The object to query.\n * @returns {Array} Returns the array of property names.\n * @example\n *\n * function Foo() {\n *   this.a = 1;\n *   this.b = 2;\n * }\n *\n * Foo.prototype.c = 3;\n *\n * _.keysIn(new Foo);\n * // => ['a', 'b', 'c'] (iteration order is not guaranteed)\n */\nfunction keysIn(object) {\n  return isArrayLike(object) ? arrayLikeKeys(object, true) : baseKeysIn(object);\n}\n\nmodule.exports = keysIn;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/keysIn.js?");
 
 /***/ }),
 
@@ -1920,28 +1656,6 @@ eval("/**\n * This method returns a new empty array.\n *\n * @static\n * @member
 /***/ (function(module, exports) {
 
 eval("/**\n * This method returns `false`.\n *\n * @static\n * @memberOf _\n * @since 4.13.0\n * @category Util\n * @returns {boolean} Returns `false`.\n * @example\n *\n * _.times(2, _.stubFalse);\n * // => [false, false]\n */\nfunction stubFalse() {\n  return false;\n}\n\nmodule.exports = stubFalse;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/stubFalse.js?");
-
-/***/ }),
-
-/***/ "./node_modules/lodash/template.js":
-/*!*****************************************!*\
-  !*** ./node_modules/lodash/template.js ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var assignInWith = __webpack_require__(/*! ./assignInWith */ \"./node_modules/lodash/assignInWith.js\"),\n    attempt = __webpack_require__(/*! ./attempt */ \"./node_modules/lodash/attempt.js\"),\n    baseValues = __webpack_require__(/*! ./_baseValues */ \"./node_modules/lodash/_baseValues.js\"),\n    customDefaultsAssignIn = __webpack_require__(/*! ./_customDefaultsAssignIn */ \"./node_modules/lodash/_customDefaultsAssignIn.js\"),\n    escapeStringChar = __webpack_require__(/*! ./_escapeStringChar */ \"./node_modules/lodash/_escapeStringChar.js\"),\n    isError = __webpack_require__(/*! ./isError */ \"./node_modules/lodash/isError.js\"),\n    isIterateeCall = __webpack_require__(/*! ./_isIterateeCall */ \"./node_modules/lodash/_isIterateeCall.js\"),\n    keys = __webpack_require__(/*! ./keys */ \"./node_modules/lodash/keys.js\"),\n    reInterpolate = __webpack_require__(/*! ./_reInterpolate */ \"./node_modules/lodash/_reInterpolate.js\"),\n    templateSettings = __webpack_require__(/*! ./templateSettings */ \"./node_modules/lodash/templateSettings.js\"),\n    toString = __webpack_require__(/*! ./toString */ \"./node_modules/lodash/toString.js\");\n\n/** Used to match empty string literals in compiled template source. */\nvar reEmptyStringLeading = /\\b__p \\+= '';/g,\n    reEmptyStringMiddle = /\\b(__p \\+=) '' \\+/g,\n    reEmptyStringTrailing = /(__e\\(.*?\\)|\\b__t\\)) \\+\\n'';/g;\n\n/**\n * Used to match\n * [ES template delimiters](http://ecma-international.org/ecma-262/7.0/#sec-template-literal-lexical-components).\n */\nvar reEsTemplate = /\\$\\{([^\\\\}]*(?:\\\\.[^\\\\}]*)*)\\}/g;\n\n/** Used to ensure capturing order of template delimiters. */\nvar reNoMatch = /($^)/;\n\n/** Used to match unescaped characters in compiled string literals. */\nvar reUnescapedString = /['\\n\\r\\u2028\\u2029\\\\]/g;\n\n/** Used for built-in method references. */\nvar objectProto = Object.prototype;\n\n/** Used to check objects for own properties. */\nvar hasOwnProperty = objectProto.hasOwnProperty;\n\n/**\n * Creates a compiled template function that can interpolate data properties\n * in \"interpolate\" delimiters, HTML-escape interpolated data properties in\n * \"escape\" delimiters, and execute JavaScript in \"evaluate\" delimiters. Data\n * properties may be accessed as free variables in the template. If a setting\n * object is given, it takes precedence over `_.templateSettings` values.\n *\n * **Note:** In the development build `_.template` utilizes\n * [sourceURLs](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/#toc-sourceurl)\n * for easier debugging.\n *\n * For more information on precompiling templates see\n * [lodash's custom builds documentation](https://lodash.com/custom-builds).\n *\n * For more information on Chrome extension sandboxes see\n * [Chrome's extensions documentation](https://developer.chrome.com/extensions/sandboxingEval).\n *\n * @static\n * @since 0.1.0\n * @memberOf _\n * @category String\n * @param {string} [string=''] The template string.\n * @param {Object} [options={}] The options object.\n * @param {RegExp} [options.escape=_.templateSettings.escape]\n *  The HTML \"escape\" delimiter.\n * @param {RegExp} [options.evaluate=_.templateSettings.evaluate]\n *  The \"evaluate\" delimiter.\n * @param {Object} [options.imports=_.templateSettings.imports]\n *  An object to import into the template as free variables.\n * @param {RegExp} [options.interpolate=_.templateSettings.interpolate]\n *  The \"interpolate\" delimiter.\n * @param {string} [options.sourceURL='templateSources[n]']\n *  The sourceURL of the compiled template.\n * @param {string} [options.variable='obj']\n *  The data object variable name.\n * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.\n * @returns {Function} Returns the compiled template function.\n * @example\n *\n * // Use the \"interpolate\" delimiter to create a compiled template.\n * var compiled = _.template('hello <%= user %>!');\n * compiled({ 'user': 'fred' });\n * // => 'hello fred!'\n *\n * // Use the HTML \"escape\" delimiter to escape data property values.\n * var compiled = _.template('<b><%- value %></b>');\n * compiled({ 'value': '<script>' });\n * // => '<b>&lt;script&gt;</b>'\n *\n * // Use the \"evaluate\" delimiter to execute JavaScript and generate HTML.\n * var compiled = _.template('<% _.forEach(users, function(user) { %><li><%- user %></li><% }); %>');\n * compiled({ 'users': ['fred', 'barney'] });\n * // => '<li>fred</li><li>barney</li>'\n *\n * // Use the internal `print` function in \"evaluate\" delimiters.\n * var compiled = _.template('<% print(\"hello \" + user); %>!');\n * compiled({ 'user': 'barney' });\n * // => 'hello barney!'\n *\n * // Use the ES template literal delimiter as an \"interpolate\" delimiter.\n * // Disable support by replacing the \"interpolate\" delimiter.\n * var compiled = _.template('hello ${ user }!');\n * compiled({ 'user': 'pebbles' });\n * // => 'hello pebbles!'\n *\n * // Use backslashes to treat delimiters as plain text.\n * var compiled = _.template('<%= \"\\\\<%- value %\\\\>\" %>');\n * compiled({ 'value': 'ignored' });\n * // => '<%- value %>'\n *\n * // Use the `imports` option to import `jQuery` as `jq`.\n * var text = '<% jq.each(users, function(user) { %><li><%- user %></li><% }); %>';\n * var compiled = _.template(text, { 'imports': { 'jq': jQuery } });\n * compiled({ 'users': ['fred', 'barney'] });\n * // => '<li>fred</li><li>barney</li>'\n *\n * // Use the `sourceURL` option to specify a custom sourceURL for the template.\n * var compiled = _.template('hello <%= user %>!', { 'sourceURL': '/basic/greeting.jst' });\n * compiled(data);\n * // => Find the source of \"greeting.jst\" under the Sources tab or Resources panel of the web inspector.\n *\n * // Use the `variable` option to ensure a with-statement isn't used in the compiled template.\n * var compiled = _.template('hi <%= data.user %>!', { 'variable': 'data' });\n * compiled.source;\n * // => function(data) {\n * //   var __t, __p = '';\n * //   __p += 'hi ' + ((__t = ( data.user )) == null ? '' : __t) + '!';\n * //   return __p;\n * // }\n *\n * // Use custom template delimiters.\n * _.templateSettings.interpolate = /{{([\\s\\S]+?)}}/g;\n * var compiled = _.template('hello {{ user }}!');\n * compiled({ 'user': 'mustache' });\n * // => 'hello mustache!'\n *\n * // Use the `source` property to inline compiled templates for meaningful\n * // line numbers in error messages and stack traces.\n * fs.writeFileSync(path.join(process.cwd(), 'jst.js'), '\\\n *   var JST = {\\\n *     \"main\": ' + _.template(mainText).source + '\\\n *   };\\\n * ');\n */\nfunction template(string, options, guard) {\n  // Based on John Resig's `tmpl` implementation\n  // (http://ejohn.org/blog/javascript-micro-templating/)\n  // and Laura Doktorova's doT.js (https://github.com/olado/doT).\n  var settings = templateSettings.imports._.templateSettings || templateSettings;\n\n  if (guard && isIterateeCall(string, options, guard)) {\n    options = undefined;\n  }\n  string = toString(string);\n  options = assignInWith({}, options, settings, customDefaultsAssignIn);\n\n  var imports = assignInWith({}, options.imports, settings.imports, customDefaultsAssignIn),\n      importsKeys = keys(imports),\n      importsValues = baseValues(imports, importsKeys);\n\n  var isEscaping,\n      isEvaluating,\n      index = 0,\n      interpolate = options.interpolate || reNoMatch,\n      source = \"__p += '\";\n\n  // Compile the regexp to match each delimiter.\n  var reDelimiters = RegExp(\n    (options.escape || reNoMatch).source + '|' +\n    interpolate.source + '|' +\n    (interpolate === reInterpolate ? reEsTemplate : reNoMatch).source + '|' +\n    (options.evaluate || reNoMatch).source + '|$'\n  , 'g');\n\n  // Use a sourceURL for easier debugging.\n  // The sourceURL gets injected into the source that's eval-ed, so be careful\n  // with lookup (in case of e.g. prototype pollution), and strip newlines if any.\n  // A newline wouldn't be a valid sourceURL anyway, and it'd enable code injection.\n  var sourceURL = hasOwnProperty.call(options, 'sourceURL')\n    ? ('//# sourceURL=' +\n       (options.sourceURL + '').replace(/[\\r\\n]/g, ' ') +\n       '\\n')\n    : '';\n\n  string.replace(reDelimiters, function(match, escapeValue, interpolateValue, esTemplateValue, evaluateValue, offset) {\n    interpolateValue || (interpolateValue = esTemplateValue);\n\n    // Escape characters that can't be included in string literals.\n    source += string.slice(index, offset).replace(reUnescapedString, escapeStringChar);\n\n    // Replace delimiters with snippets.\n    if (escapeValue) {\n      isEscaping = true;\n      source += \"' +\\n__e(\" + escapeValue + \") +\\n'\";\n    }\n    if (evaluateValue) {\n      isEvaluating = true;\n      source += \"';\\n\" + evaluateValue + \";\\n__p += '\";\n    }\n    if (interpolateValue) {\n      source += \"' +\\n((__t = (\" + interpolateValue + \")) == null ? '' : __t) +\\n'\";\n    }\n    index = offset + match.length;\n\n    // The JS engine embedded in Adobe products needs `match` returned in\n    // order to produce the correct `offset` value.\n    return match;\n  });\n\n  source += \"';\\n\";\n\n  // If `variable` is not specified wrap a with-statement around the generated\n  // code to add the data object to the top of the scope chain.\n  // Like with sourceURL, we take care to not check the option's prototype,\n  // as this configuration is a code injection vector.\n  var variable = hasOwnProperty.call(options, 'variable') && options.variable;\n  if (!variable) {\n    source = 'with (obj) {\\n' + source + '\\n}\\n';\n  }\n  // Cleanup code by stripping empty strings.\n  source = (isEvaluating ? source.replace(reEmptyStringLeading, '') : source)\n    .replace(reEmptyStringMiddle, '$1')\n    .replace(reEmptyStringTrailing, '$1;');\n\n  // Frame code as the function body.\n  source = 'function(' + (variable || 'obj') + ') {\\n' +\n    (variable\n      ? ''\n      : 'obj || (obj = {});\\n'\n    ) +\n    \"var __t, __p = ''\" +\n    (isEscaping\n       ? ', __e = _.escape'\n       : ''\n    ) +\n    (isEvaluating\n      ? ', __j = Array.prototype.join;\\n' +\n        \"function print() { __p += __j.call(arguments, '') }\\n\"\n      : ';\\n'\n    ) +\n    source +\n    'return __p\\n}';\n\n  var result = attempt(function() {\n    return Function(importsKeys, sourceURL + 'return ' + source)\n      .apply(undefined, importsValues);\n  });\n\n  // Provide the compiled function's source by its `toString` method or\n  // the `source` property as a convenience for inlining compiled templates.\n  result.source = source;\n  if (isError(result)) {\n    throw result;\n  }\n  return result;\n}\n\nmodule.exports = template;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/template.js?");
-
-/***/ }),
-
-/***/ "./node_modules/lodash/templateSettings.js":
-/*!*************************************************!*\
-  !*** ./node_modules/lodash/templateSettings.js ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var escape = __webpack_require__(/*! ./escape */ \"./node_modules/lodash/escape.js\"),\n    reEscape = __webpack_require__(/*! ./_reEscape */ \"./node_modules/lodash/_reEscape.js\"),\n    reEvaluate = __webpack_require__(/*! ./_reEvaluate */ \"./node_modules/lodash/_reEvaluate.js\"),\n    reInterpolate = __webpack_require__(/*! ./_reInterpolate */ \"./node_modules/lodash/_reInterpolate.js\");\n\n/**\n * By default, the template delimiters used by lodash are like those in\n * embedded Ruby (ERB) as well as ES2015 template strings. Change the\n * following template settings to use alternative delimiters.\n *\n * @static\n * @memberOf _\n * @type {Object}\n */\nvar templateSettings = {\n\n  /**\n   * Used to detect `data` property values to be HTML-escaped.\n   *\n   * @memberOf _.templateSettings\n   * @type {RegExp}\n   */\n  'escape': reEscape,\n\n  /**\n   * Used to detect code to be evaluated.\n   *\n   * @memberOf _.templateSettings\n   * @type {RegExp}\n   */\n  'evaluate': reEvaluate,\n\n  /**\n   * Used to detect `data` property values to inject.\n   *\n   * @memberOf _.templateSettings\n   * @type {RegExp}\n   */\n  'interpolate': reInterpolate,\n\n  /**\n   * Used to reference the data object in the template text.\n   *\n   * @memberOf _.templateSettings\n   * @type {string}\n   */\n  'variable': '',\n\n  /**\n   * Used to import variables into the compiled template.\n   *\n   * @memberOf _.templateSettings\n   * @type {Object}\n   */\n  'imports': {\n\n    /**\n     * A reference to the `lodash` function.\n     *\n     * @memberOf _.templateSettings.imports\n     * @type {Function}\n     */\n    '_': { 'escape': escape }\n  }\n};\n\nmodule.exports = templateSettings;\n\n\n//# sourceURL=webpack:///./node_modules/lodash/templateSettings.js?");
 
 /***/ }),
 
@@ -2370,7 +2084,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants */ \"./src/constants.js\");\n/* harmony import */ var _calendars__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./calendars */ \"./src/calendars.js\");\n/* harmony import */ var _vCalendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./vCalendar */ \"./src/vCalendar.js\");\n/* harmony import */ var _templates__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./templates */ \"./src/templates.js\");\n/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./style.scss */ \"./src/style.scss\");\n/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_style_scss__WEBPACK_IMPORTED_MODULE_4__);\n/* global window, document, fetch */\n\n\n\n\n\n\n\n\n\nconst FastmailCalendarOverview = {\n  init() {\n    console.log('Fastmail Calendar Overview, calendars:', _calendars__WEBPACK_IMPORTED_MODULE_1__[\"default\"]); // eslint-disable-line\n\n    // get and parse the calendar data\n    this.fetchCalendars()\n      .then((data) => this.parseResults(data))\n      .then((data) => this.addMarkup(data));\n\n    // set a timer to refresh the calendars\n    this.startInterval();\n  },\n\n  startInterval() {\n    this.calendarTimer = setInterval(\n      this.fetchCalendars.bind(this),\n      _constants__WEBPACK_IMPORTED_MODULE_0__[\"REFRESH_INTERVAL\"],\n    );\n  },\n\n  getTargetDiv() {\n    return document.getElementById(_constants__WEBPACK_IMPORTED_MODULE_0__[\"TARGET_DIV\"]).parentNode;\n  },\n\n  fetchCalendars() {\n    const fetches = _calendars__WEBPACK_IMPORTED_MODULE_1__[\"default\"].map((calendar) => fetch(calendar.url));\n\n    return Promise.all(fetches)\n      .then((responses) => (\n        Promise.all(responses.map((res) => res.text()))));\n  },\n\n  parseResults(results) {\n    let events = [];\n\n    results.forEach((result, i) => {\n      const parsedEvents = _vCalendar__WEBPACK_IMPORTED_MODULE_2__[\"default\"].parse(result, _calendars__WEBPACK_IMPORTED_MODULE_1__[\"default\"][i].name);\n      events = events.concat(parsedEvents);\n    });\n\n    events = _vCalendar__WEBPACK_IMPORTED_MODULE_2__[\"default\"].groupEvents(events);\n\n    console.log('Fastmail Calendar Overview, events:', events); // eslint-disable-line\n\n    return Promise.resolve(events);\n  },\n\n  addMarkup(events) {\n    // prepare the underscore templates for use in the dom\n    _templates__WEBPACK_IMPORTED_MODULE_3__[\"default\"].init();\n\n    this.wrapper = document.getElementById(_constants__WEBPACK_IMPORTED_MODULE_0__[\"WRAPPER_ID\"]);\n    const newContent = _templates__WEBPACK_IMPORTED_MODULE_3__[\"default\"].wrapper({ events });\n    console.log(newContent);\n\n    if (this.wrapper.length) {\n      this.wrapper.innerHTML = newContent;\n    } else {\n      this.getTargetDiv().appendChild(newContent);\n    }\n\n    this.wrapper = document.getElementById(_constants__WEBPACK_IMPORTED_MODULE_0__[\"WRAPPER_ID\"]);\n    this.sizeWrapper();\n\n    // TODO add a resize event listener\n    // return $(window).on('resize', this.sizeWrapper.bind(this));\n  },\n\n  sizeWrapper() {\n    /*\n    const columnHeight = this.getTargetDiv().height();\n    const lastColumnElement = $('.v-Sources-group');\n    const lastElementBottom = lastColumnElement.offset().top + lastColumnElement.outerHeight();\n    const usageHeight = $(USAGE_DIV).outerHeight();\n    const margin = 20;\n\n    let overviewHeight = columnHeight - lastElementBottom - usageHeight - margin;\n\n    if (overviewHeight > MAX_HEIGHT) {\n      overviewHeight = MAX_HEIGHT;\n    }\n\n    this.wrapper.css({\n      bottom: usageHeight,\n      height: overviewHeight,\n    });\n    */\n\n    this.wrapper.css({\n      bottom: 60,\n      height: 250,\n    });\n  },\n};\n\n// run the initiliazer with a self-executing function\n(() => {\n  // delay initial action for fastmail to initialize\n  setTimeout(() => {\n    FastmailCalendarOverview.init();\n  }, 500);\n})();\n\n\n//# sourceURL=webpack:///./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants */ \"./src/constants.js\");\n/* harmony import */ var _calendars__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./calendars */ \"./src/calendars.js\");\n/* harmony import */ var _vCalendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./vCalendar */ \"./src/vCalendar.js\");\n/* harmony import */ var _templates__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./templates */ \"./src/templates.js\");\n/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./style.scss */ \"./src/style.scss\");\n/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_style_scss__WEBPACK_IMPORTED_MODULE_4__);\n/* global window, document, fetch */\n\n\n\n\n\n\n\n\n\nconst FastmailCalendarOverview = {\n  init() {\n    console.log('Fastmail Calendar Overview, calendars:', _calendars__WEBPACK_IMPORTED_MODULE_1__[\"default\"]); // eslint-disable-line\n\n    // get and parse the calendar data\n    this.fetchCalendars()\n      .then((data) => this.parseResults(data))\n      .then((data) => this.addMarkup(data));\n\n    // set a timer to refresh the calendars\n    this.startInterval();\n  },\n\n  startInterval() {\n    this.calendarTimer = setInterval(\n      this.fetchCalendars.bind(this),\n      _constants__WEBPACK_IMPORTED_MODULE_0__[\"REFRESH_INTERVAL\"],\n    );\n  },\n\n  getTargetDiv() {\n    return document.querySelectorAll(_constants__WEBPACK_IMPORTED_MODULE_0__[\"TARGET_DIV\"])[0].parentNode;\n  },\n\n  fetchCalendars() {\n    const fetches = _calendars__WEBPACK_IMPORTED_MODULE_1__[\"default\"].map((calendar) => fetch(calendar.url));\n\n    return Promise.all(fetches)\n      .then((responses) => (\n        Promise.all(responses.map((res) => res.text()))));\n  },\n\n  parseResults(results) {\n    let events = [];\n\n    results.forEach((result, i) => {\n      const parsedEvents = _vCalendar__WEBPACK_IMPORTED_MODULE_2__[\"default\"].parse(result, _calendars__WEBPACK_IMPORTED_MODULE_1__[\"default\"][i].name);\n      events = events.concat(parsedEvents);\n    });\n\n    events = _vCalendar__WEBPACK_IMPORTED_MODULE_2__[\"default\"].groupEvents(events);\n\n    console.log('Fastmail Calendar Overview, grouped events:', events); // eslint-disable-line\n\n    return Promise.resolve(events);\n  },\n\n  addMarkup(events) {\n    this.wrapper = document.getElementById(_constants__WEBPACK_IMPORTED_MODULE_0__[\"WRAPPER_ID\"]);\n    const newContent = _templates__WEBPACK_IMPORTED_MODULE_3__[\"default\"].wrapper(events);\n\n    if (this.wrapper) {\n      this.wrapper.innerHTML = newContent;\n    } else {\n      this.getTargetDiv().appendChild(newContent);\n    }\n\n    this.wrapper = document.getElementById(_constants__WEBPACK_IMPORTED_MODULE_0__[\"WRAPPER_ID\"]);\n    this.sizeWrapper();\n\n    // TODO add a resize event listener\n    // return $(window).on('resize', this.sizeWrapper.bind(this));\n  },\n\n  sizeWrapper() {\n    /*\n    const columnHeight = this.getTargetDiv().height();\n    const lastColumnElement = $('.v-Sources-group');\n    const lastElementBottom = lastColumnElement.offset().top + lastColumnElement.outerHeight();\n    const usageHeight = document.querySelectorAll(USAGE_DIV)[0].outerHeight();\n    const margin = 20;\n\n    let overviewHeight = columnHeight - lastElementBottom - usageHeight - margin;\n\n    if (overviewHeight > MAX_HEIGHT) {\n      overviewHeight = MAX_HEIGHT;\n    }\n\n    this.wrapper.css({\n      bottom: usageHeight,\n      height: overviewHeight,\n    });\n    */\n  },\n};\n\n// run the initiliazer with a self-executing function\n(() => {\n  // delay initial action for fastmail to initialize\n  setTimeout(() => {\n    FastmailCalendarOverview.init();\n  }, 500);\n})();\n\n\n//# sourceURL=webpack:///./src/index.js?");
 
 /***/ }),
 
@@ -2393,7 +2107,7 @@ eval("// extracted by mini-css-extract-plugin\n\n//# sourceURL=webpack:///./src/
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var lodash_template__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/template */ \"./node_modules/lodash/template.js\");\n/* harmony import */ var lodash_template__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_template__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var lodash_each__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash/each */ \"./node_modules/lodash/each.js\");\n/* harmony import */ var lodash_each__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash_each__WEBPACK_IMPORTED_MODULE_1__);\n\n\n\n/* harmony default export */ __webpack_exports__[\"default\"] = ({\n  init() {\n    this.wrapper = lodash_template__WEBPACK_IMPORTED_MODULE_0___default()(this.wrapperSrc());\n    this.day = lodash_template__WEBPACK_IMPORTED_MODULE_0___default()(this.daySrc());\n    this.event = lodash_template__WEBPACK_IMPORTED_MODULE_0___default()(this.eventSrc());\n  },\n\n  wrapperSrc() {\n    return `\\\n<ul id='fastmail-calendar-overview-wrapper'>\n<% each(events, function(day) { %>\n  ${this.daySrc()}\n<% }); %>\n</ul>\\\n`;\n  },\n\n  daySrc() {\n    return `\\\n<li class='fastmail-calendar-overview-event'>\n<h3>\n  <%- day.displayDate %>\n</h3>\n<% each(day.events, function(event) { %>\n  ${this.eventSrc()}\n<% }); %>\n</li>\\\n`;\n  },\n\n  eventSrc() {\n    return `\\\n<div class='event'>\n<% if (event.timeString) { %>\n  <span class='time'>\n    <%- event.timeString %>\n  </span>\n<% } %>\n<%- event.summary %>\n<div class='details'>\n\n  <h3>\n    <%- event.summary %>\n  </h3>\n\n  <% if (event.durationHours) { %>\n    <span class='duration'>\n      <%- event.durationHours %>\n    </span>\n  <% } %>\n\n  <% if (event.description) { %>\n    <span class='description'>\n      <%= event.description %>\n    </span>\n  <% } %>\n\n  <% if (event.location) { %>\n    <span class='location'>\n      <%- event.location %>\n      <br>\n      <a target='_blank' href='http://maps.google.com/maps?f=q&hl=en&iwloc=addr&q=<%- event.location %>'>\n        map\n      </a>\n    </span>\n  <% } %>\n\n  <% if (event.calendar) { %>\n    <span class='calendar'>\n      calendar: <%= event.calendar %>\n    </span>\n  <% } %>\n\n</div>\n</div>\\\n`;\n  },\n});\n\n\n//# sourceURL=webpack:///./src/templates.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* global document */\n\n/* harmony default export */ __webpack_exports__[\"default\"] = ({\n  wrapper(days) {\n    const res = document.createElement('ul');\n    res.id = 'fastmail-calendar-overview-wrapper';\n    res.innerHTML = days.map((day) => this.day(day)).join('');\n\n    return res;\n  },\n\n  day(day) {\n    return `\n      <li class='fastmail-calendar-overview-event'>\n        <h3>${day.displayDate}</h3>\n        ${day.events.map((event) => this.event(event)).join('')}\n      </li>\n    `;\n  },\n\n  event(event) {\n    return `\n      <div class='event'>\n        ${event.timeString ? `\n          <span class='time'>\n            ${event.timeString}\n          </span>\n        ` : ''}\n\n        ${event.summary}\n\n        <div class='details'>\n          <h3>${event.summary}</h3>\n\n          ${event.durationHours ? `\n            <span class='duration'>\n              ${event.durationHours}\n            </span>\n          ` : ''}\n\n          ${event.description ? `\n            <span class='description'>\n              ${event.description}\n            </span>\n          ` : ''}\n\n          ${event.location ? `\n            <span class='location'>\n              ${event.location}\n              <br>\n              <a\n                target='_blank'\n                href='http://maps.google.com/maps?f=q&hl=en&iwloc=addr&q=${event.location}'\n              >\n                map\n              </a>\n            </span>\n          ` : ''}\n\n          ${event.calendar ? `\n            <span class='calendar'>\n              calendar: ${event.calendar}\n            </span>\n          ` : ''}\n\n        </div>\n      </div>\n    `;\n  },\n});\n\n\n//# sourceURL=webpack:///./src/templates.js?");
 
 /***/ }),
 
