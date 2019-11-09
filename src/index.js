@@ -2,9 +2,10 @@
 
 import {
   TARGET_DIV,
-  USAGE_DIV,
+  LAST_FASTMAIL_ELEMENT,
   WRAPPER_ID,
   MAX_HEIGHT,
+  MIN_HEIGHT,
   REFRESH_INTERVAL,
 } from './constants';
 
@@ -74,29 +75,25 @@ const FastmailCalendarOverview = {
     this.wrapper = document.getElementById(WRAPPER_ID);
     this.sizeWrapper();
 
-    // TODO add a resize event listener
-    // return $(window).on('resize', this.sizeWrapper.bind(this));
+    window.addEventListener('resize', this.sizeWrapper.bind(this));
   },
 
   sizeWrapper() {
-    /*
-    const columnHeight = this.getTargetDiv().height();
-    const lastColumnElement = $('.v-Sources-group');
-    const lastElementBottom = lastColumnElement.offset().top + lastColumnElement.outerHeight();
-    const usageHeight = document.querySelectorAll(USAGE_DIV)[0].outerHeight();
-    const margin = 20;
+    const columnHeight = this.getTargetDiv().getBoundingClientRect().height;
+    const lastColumnElement = document.querySelectorAll(LAST_FASTMAIL_ELEMENT)[0];
+    const lastElementBottom = lastColumnElement.getBoundingClientRect().bottom;
+    const usageHeight = document.querySelectorAll(TARGET_DIV)[0].getBoundingClientRect().height;
 
-    let overviewHeight = columnHeight - lastElementBottom - usageHeight - margin;
+    const wrapperHeight = Math.min(
+      columnHeight - lastElementBottom - usageHeight,
+      MAX_HEIGHT,
+    );
 
-    if (overviewHeight > MAX_HEIGHT) {
-      overviewHeight = MAX_HEIGHT;
-    }
+    this.wrapper.style.bottom = `${usageHeight}px`;
+    this.wrapper.style.height = `${wrapperHeight}px`;
 
-    this.wrapper.css({
-      bottom: usageHeight,
-      height: overviewHeight,
-    });
-    */
+    // hide it entirely when it's too small to read
+    this.wrapper.style.display = wrapperHeight < MIN_HEIGHT ? 'none' : 'block';
   },
 };
 

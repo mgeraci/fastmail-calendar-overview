@@ -1,9 +1,11 @@
 /* global document */
 
+import { WRAPPER_ID } from './constants';
+
 export default {
   wrapper(days) {
     const res = document.createElement('ul');
-    res.id = 'fastmail-calendar-overview-wrapper';
+    res.id = WRAPPER_ID;
     res.innerHTML = days.map((day) => this.day(day)).join('');
 
     return res;
