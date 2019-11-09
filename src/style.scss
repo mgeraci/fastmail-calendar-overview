@@ -1,7 +1,101 @@
-body {
-	background: palegoldenrod;
+$gray-1: #333;
+$gray-2: #666;
+$gray-3: #aaa;
+$gray-4: #ccc;
 
-	input {
-		background: blue;
+// fastmail changes
+.v-FolderTree {
+  position: relative;
+  z-index: 2;
+  background: #000;
+  box-shadow: 0 3px 5px black;
+}
+
+// fade in/out an element then toggle its visibility
+// - direction: hide or show
+// - time: transition time in ms
+// - delay (optional): how long before the transition kicks in
+@mixin fade-and-hide($direction, $time, $delay: 0) {
+  @if $direction == hide {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity $time ease $delay, visibility 0ms linear ($time + $delay + 100);
+	}
+
+  @if $direction == show {
+    opacity: 1;
+    visibility: visible;
+    transition: visibility 0ms linear, opacity $time ease ($delay + 10);
+	}
+}
+
+#fastmail-calendar-overview-wrapper {
+  position: absolute;
+  z-index: 1;
+  overflow: auto;
+  width: 100%;
+  padding: 0 10px;
+  color: $gray-3;
+
+	&,
+  * {
+    box-sizing: border-box;
+	}
+
+  // each day
+  li {
+    margin-bottom: 15px;
+
+    // day title
+    h3 {
+      display: block;
+      width: 100%;
+      padding: 3px 5px;
+      margin-bottom: 3px;
+      background: $gray-1;
+		}
+
+    .event {
+      position: relative;
+      margin-top: 2px;
+
+      &:hover {
+        .details {
+          @include fade-and-hide(show, 200ms);
+				}
+			}
+
+      .time {
+        color: $gray-2;
+			}
+
+      .details {
+        @include fade-and-hide(hide, 200ms);
+        position: absolute;
+        z-index: 3;
+        top: 20px;
+        left: 0;
+        width: 100%;
+        height: auto;
+        min-height: 20px;
+        padding: 10px;
+        background: $gray-4;
+        color: $gray-1;
+
+        h3 {
+          padding: 0;
+          margin: 0;
+          background: none;
+          color: $gray-1;
+          font-weight: bold;
+				}
+
+        span {
+          display: inline-block;
+          width: 100%;
+          margin-top: 10px;
+				}
+			}
+		}
 	}
 }
