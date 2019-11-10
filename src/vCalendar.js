@@ -69,7 +69,8 @@ export default {
 
   // given an array of events, return a sorted array of objects with event info
   // and events (sorted by event start time)
-  groupEvents(events) {
+  groupEvents(_events) {
+    let events = [..._events];
     let res = [];
 
     // get the dateBucket-style time and reject ones lower than today
@@ -86,17 +87,21 @@ export default {
 
       // sort the events by allDay, then start time
       dayEvents.events = dayEvents.events.sort((a, b) => {
+        let sortRes;
+
         if (a.allDay && b.allDay) {
-          return a.summary > b.summary;
+          sortRes = a.summary > b.summary;
         } else if (a.allDay && !b.allDay) {
-          return -1;
+          sortRes = -1;
         } else if (!a.allDay && b.allDay) {
-          return 1;
+          sortRes = 1;
         } else if (a.startTimestamp > b.startTimestamp) {
-          return 1;
+          sortRes = 1;
         } else {
-          return -1;
+          sortRes = -1;
         }
+
+        return sortRes;
       });
 
       res.push(dayEvents);
