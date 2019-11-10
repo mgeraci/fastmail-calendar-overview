@@ -1,36 +1,33 @@
 import RRule from 'rrule';
-import reject from 'lodash/reject'; // TODO replace with native filter
 import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
 
 import {
   MONTHS,
   DAYS_SHORT,
+  EVENT_HORIZON,
+  VCAL_FIELDS,
+  MS_PER_DAY,
 } from './constants';
 
 export default {
-  // how many instances of a recurring event to add to our timeline
-  recurringCount: 5,
-
   // given data from a calendar url, make an array of events
   parse(data, calendar) {
+    // save some information about today to the singleton for reuse
+    this.now = new Date();
+    this.today = this.getMidnightFromTime(this.now);
+    this.nowDateBucket = this.getNowDateBucket();
+
     const lines = data.split('\n');
     const events = [];
     let event = {};
-    this.now = new Date();
-    const nowDateBucket = this.getNowDateBucket();
-    this.today = this.getMidnightFromTime(this.now);
-
-    // how far into the future to get events (one month)
-    this.distance = 1000 * 60 * 60 * 24 * 30;
 
     // offset is in hours, so convert
     this.offset = this.now.getTimezoneOffset() * -1 * 60 * 1000;
 
     Array.from(lines).forEach((line) => {
-      // all fields
-      Object.keys(this.fields || {}).forEach((fieldName) => {
-        const fieldKey = this.fields[fieldName];
+      Object.keys(VCAL_FIELDS).forEach((fieldName) => {
+        const fieldKey = VCAL_FIELDS[fieldName];
 
         if (this.isLine(line, fieldName)) {
           event[fieldKey] = this.getContent(line);
@@ -48,7 +45,7 @@ export default {
         this.processDateFields(event);
 
         // kill bad descriptions
-        if ((event.description != null ? event.description.indexOf('View your event at https://www.google.com/calendar/event') : undefined) >= 0) {
+        if (event.description && event.description.indexOf('View your event at https://www.google.com/calendar/event') >= 0) {
           event.description = false;
         }
 
@@ -80,7 +77,7 @@ export default {
           const ruleStartTime = new Date(this.now.getTime() - (1000 * 60 * 60 * 24));
           const eventDates = rule.between(
             ruleStartTime,
-            new Date(this.now.getTime() + this.distance),
+            new Date(this.now.getTime() + EVENT_HORIZON),
           );
 
           Array.from(eventDates).forEach((eventDateString) => {
@@ -101,7 +98,7 @@ export default {
           });
 
         // if it's an all-day event, just check the date bucket, not the time
-        } else if (event.allDay && (event.dateBucket === nowDateBucket)) {
+        } else if (event.allDay && (event.dateBucket === this.nowDateBucket)) {
           events.push(event);
 
         // otherwise, if there's a startTimestamp field, and it's in the future, add it
@@ -119,9 +116,8 @@ export default {
   groupEvents(events) {
     let res = [];
 
-    // get the dateBucket style time and reject ones lower than today
-    const nowDateBucket = parseInt(this.getNowDateBucket(), 10);
-    events = reject(events, (e) => parseInt(e.dateBucket, 10) < nowDateBucket);
+    // get the dateBucket-style time and reject ones lower than today
+    events = events.filter((e) => e.dateBucket >= this.nowDateBucket);
     events = groupBy(events, 'dateBucket');
 
     Object.keys(events).forEach((day) => {
@@ -166,7 +162,7 @@ export default {
       // it to be a day later
       if (parsedTime.allDay) {
         event.startTimestamp = this.generateTimestamp(parsedTime);
-        event.endTimestamp = event.startTimestamp + 86400000;
+        event.endTimestamp = event.startTimestamp + MS_PER_DAY;
         event.allDay = true;
 
         // returning true short circuits the rest of the `some` loop above
@@ -188,14 +184,8 @@ export default {
       if (durationHours === 24) {
         durationHours = 'All day';
       } else {
-        let addendum;
-        if (durationHours === 1) {
-          addendum = 'hour';
-        } else {
-          addendum = 'hours';
-        }
-
-        durationHours = `${durationHours} ${addendum}`;
+        const suffix = durationHours === 1 ? 'hour' : 'hours';
+        durationHours = `${durationHours} ${suffix}`;
       }
 
       event.durationHours = durationHours;
@@ -325,22 +315,11 @@ export default {
   // caluclate the number of days between two unix timestamps
   daysBetween(event, now) {
     const diff = Math.abs(now - event);
-    return Math.floor(diff / 86400000);
-  },
-
-  // a list of fields to extract
-  fields: {
-    UID: 'id',
-    SUMMARY: 'summary',
-    DESCRIPTION: 'description',
-    LOCATION: 'location',
-    DTSTART: 'startTime',
-    DTEND: 'endTime',
-    RRULE: 'rrule',
+    return Math.floor(diff / MS_PER_DAY);
   },
 
   // given a line of text and a search string, return a boolean for if the search
-  // is found in the line
+  // is found at the start of the line
   isLine(line, str) {
     return line.indexOf(str) === 0;
   },
@@ -352,7 +331,12 @@ export default {
       .replace(/\\n/g, '<br>');
   },
 
+  // get today's date in the format YYYYMMDD
   getNowDateBucket() {
-    return `${this.now.getFullYear()}${this.stringPadNumber(this.now.getMonth() + 1)}${this.stringPadNumber(this.now.getDate())}`;
+    const year = this.now.getFullYear();
+    const month = this.stringPadNumber(this.now.getMonth() + 1);
+    const day = this.stringPadNumber(this.now.getDate());
+
+    return `${year}${month}${day}`;
   },
 };

@@ -13,6 +13,22 @@ export const MAX_HEIGHT = 400;
 export const MIN_HEIGHT = 150;
 export const REFRESH_INTERVAL = 1000 * 60 * 15; // 15 minutes
 
+// how far into the future to show events (1 month)
+export const EVENT_HORIZON = 1000 * 60 * 60 * 24 * 30;
+
+export const MS_PER_DAY = 86400000;
+
+// the fields in a vcal event
+export const VCAL_FIELDS = {
+  UID: 'id',
+  SUMMARY: 'summary',
+  DESCRIPTION: 'description',
+  LOCATION: 'location',
+  DTSTART: 'startTime',
+  DTEND: 'endTime',
+  RRULE: 'rrule',
+};
+
 export const MONTHS = [
   'January',
   'February',
