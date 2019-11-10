@@ -18,12 +18,12 @@ export default {
     this.today = this.getMidnightFromTime(this.now);
     this.nowDateBucket = this.getNowDateBucket();
 
-    const lines = data.split('\n');
-    const events = [];
-    let event = {};
+    // the timezone offset is in hours, so convert to ms
+    this.gmtOffset = this.now.getTimezoneOffset() * -1 * 60 * 1000;
 
-    // offset is in hours, so convert
-    this.offset = this.now.getTimezoneOffset() * -1 * 60 * 1000;
+    const lines = data.split('\n');
+    let events = [];
+    let event = {};
 
     Array.from(lines).forEach((line) => {
       Object.keys(VCAL_FIELDS).forEach((fieldName) => {
@@ -51,51 +51,7 @@ export default {
 
         // if this event has a recurring rule, parse it
         if (event.rrule) {
-          // convert the starttime into a format that rrule understands (in
-          // zulu time)
-          // timestamp = event.startTimestamp + @offset
-          const timestamp = event.startTimestamp;
-          const date = new Date(timestamp);
-
-          const year = date.getFullYear();
-          const month = this.stringPadNumber(date.getMonth() + 1);
-          const day = this.stringPadNumber(date.getDate());
-          const eventTime = new Date(new Date(event.startTimestamp).getTime() - this.offset);
-          const hours = this.stringPadNumber(eventTime.getHours());
-          const minutes = this.stringPadNumber(eventTime.getMinutes());
-          const seconds = '00';
-          const rruleStart = `${year}${month}${day}T${hours}${minutes}${seconds}Z`;
-
-          event.rrule = `${event.rrule};DTSTART=${rruleStart}`;
-          event.rrule = event.rrule.replace(/[\s\n\r\t]/g, '');
-
-          // create an RRule object from the string that we've created
-          const rule = RRule.fromString(event.rrule);
-
-          // get a set of applicable events for this rule in the given time frame
-          // (e.g., from now until a month from now)
-          const ruleStartTime = new Date(this.now.getTime() - (1000 * 60 * 60 * 24));
-          const eventDates = rule.between(
-            ruleStartTime,
-            new Date(this.now.getTime() + EVENT_HORIZON),
-          );
-
-          Array.from(eventDates).forEach((eventDateString) => {
-            const eventDate = new Date(eventDateString);
-
-            // make a new instance of the recurring event, but delete the non-
-            // applicable fields, and replace the start with this instance's
-            const eventInstance = { ...event };
-
-            delete eventInstance.startTime;
-            delete eventInstance.endTime;
-            delete eventInstance.endTimestamp;
-
-            eventInstance.startTimestamp = eventDate.getTime();
-
-            this.addDateInfo(eventInstance);
-            events.push(eventInstance);
-          });
+          events = events.concat(this.getEventsFromRecurringEvent(event));
 
         // if it's an all-day event, just check the date bucket, not the time
         } else if (event.allDay && (event.dateBucket === this.nowDateBucket)) {
@@ -282,13 +238,66 @@ export default {
     // if the time section ends with a `Z`, that indicates Zulu time, aka GMT. so
     // convert to local time.
     if (time[6] === 'Z') {
-      timestamp += this.offset;
+      timestamp += this.gmtOffset;
     }
 
     return timestamp;
   },
 
-  // generate a unix timestamp
+  // given an event with an `rrule` flag, generate individual events into the
+  // future
+  getEventsFromRecurringEvent(event) {
+    const res = [];
+
+    // convert the starttime into a format that rrule understands (in
+    // zulu time)
+    const timestamp = event.startTimestamp;
+    const date = new Date(timestamp);
+
+    const year = date.getFullYear();
+    const month = this.stringPadNumber(date.getMonth() + 1);
+    const day = this.stringPadNumber(date.getDate());
+    const eventTime = new Date(new Date(event.startTimestamp).getTime() - this.gmtOffset);
+    const hours = this.stringPadNumber(eventTime.getHours());
+    const minutes = this.stringPadNumber(eventTime.getMinutes());
+    const seconds = '00';
+    const rruleStart = `${year}${month}${day}T${hours}${minutes}${seconds}Z`;
+
+    event.rrule = `${event.rrule};DTSTART=${rruleStart}`;
+    event.rrule = event.rrule.replace(/[\s\n\r\t]/g, '');
+
+    // create an RRule object from the string that we've created
+    const rule = RRule.fromString(event.rrule);
+
+    // get a set of applicable events for this rule in the given time
+    // frame (e.g., from now until a month from now). make the start time
+    // yesterday to catch edge cases around midnight.
+    const eventDates = rule.between(
+      new Date(this.now.getTime() - MS_PER_DAY),
+      new Date(this.now.getTime() + EVENT_HORIZON),
+    );
+
+    eventDates.forEach((eventDateString) => {
+      const eventDate = new Date(eventDateString);
+
+      // make a new instance of the recurring event, but delete the non-
+      // applicable fields, and replace the start with this instance's
+      const eventInstance = { ...event };
+
+      delete eventInstance.startTime;
+      delete eventInstance.endTime;
+      delete eventInstance.endTimestamp;
+
+      eventInstance.startTimestamp = eventDate.getTime();
+
+      this.addDateInfo(eventInstance);
+      res.push(eventInstance);
+    });
+
+    return res;
+  },
+
+  // generate a UTC timestamp
   generateTimestamp(params) {
     const timestampUTC = new Date(
       params.year,
