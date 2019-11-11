@@ -15,6 +15,7 @@
   #fastmail-calendar-overview-wrapper * {
     box-sizing: border-box; }
   #fastmail-calendar-overview-wrapper li {
+    width: 100%;
     margin-bottom: 15px; }
     #fastmail-calendar-overview-wrapper li h3 {
       display: block;
@@ -54,5 +55,6 @@
         #fastmail-calendar-overview-wrapper li .event .details span {
           display: inline-block;
           width: 100%;
-          margin-top: 10px; }
+          margin-top: 10px;
+          overflow-wrap: break-word; }
 

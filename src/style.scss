@@ -20,13 +20,13 @@ $gray-4: #ccc;
     opacity: 0;
     visibility: hidden;
     transition: opacity $time ease $delay, visibility 0ms linear ($time + $delay + 100);
-	}
+  }
 
   @if $direction == show {
     opacity: 1;
     visibility: visible;
     transition: visibility 0ms linear, opacity $time ease ($delay + 10);
-	}
+  }
 }
 
 #fastmail-calendar-overview-wrapper {
@@ -37,13 +37,14 @@ $gray-4: #ccc;
   padding: 0 10px;
   color: $gray-3;
 
-	&,
+  &,
   * {
     box-sizing: border-box;
-	}
+  }
 
   // each day
   li {
+    width: 100%;
     margin-bottom: 15px;
 
     // day title
@@ -53,7 +54,7 @@ $gray-4: #ccc;
       padding: 3px 5px;
       margin-bottom: 3px;
       background: $gray-1;
-		}
+    }
 
     .event {
       position: relative;
@@ -62,12 +63,12 @@ $gray-4: #ccc;
       &:hover {
         .details {
           @include fade-and-hide(show, 200ms);
-				}
-			}
+        }
+      }
 
       .time {
         color: $gray-2;
-			}
+      }
 
       .details {
         @include fade-and-hide(hide, 200ms);
@@ -88,14 +89,15 @@ $gray-4: #ccc;
           background: none;
           color: $gray-1;
           font-weight: bold;
-				}
+        }
 
         span {
           display: inline-block;
           width: 100%;
           margin-top: 10px;
-				}
-			}
-		}
-	}
+          overflow-wrap: break-word;
+        }
+      }
+    }
+  }
 }

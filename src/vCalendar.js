@@ -45,7 +45,12 @@ export default {
         event = this.processDateFields(event);
 
         // kill bad descriptions
-        if (event.description && event.description.indexOf('View your event at https://www.google.com/calendar/event') >= 0) {
+        if (
+          event.description && (
+            event.description.indexOf('View your event at https://www.google.com/calendar/event') >= 0 ||
+            event.description.indexOf('-::~') === 0
+          )
+        ) {
           event.description = false;
         }
 
