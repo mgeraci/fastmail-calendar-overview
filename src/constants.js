@@ -11,7 +11,9 @@ export const WRAPPER_ID = 'fastmail-calendar-overview-wrapper';
 // height of the calendar area
 export const MAX_HEIGHT = 400;
 export const MIN_HEIGHT = 150;
-export const REFRESH_INTERVAL = 1000 * 60 * 15; // 15 minutes
+
+// export const REFRESH_INTERVAL = 1000 * 60 * 15; // 15 minutes
+export const REFRESH_INTERVAL = 1000 * 10;
 
 // how far into the future to show events (1 month)
 export const EVENT_HORIZON = 1000 * 60 * 60 * 24 * 30;

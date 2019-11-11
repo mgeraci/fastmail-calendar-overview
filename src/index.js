@@ -19,24 +19,24 @@ const FastmailCalendarOverview = {
   init() {
     console.log('Fastmail Calendar Overview, calendars:', CALENDARS); // eslint-disable-line
 
-    // get and parse the calendar data
+    this.run();
+    this.startInterval();
+    window.addEventListener('resize', this.sizeWrapper.bind(this));
+  },
+
+  // fetch, parse, and display the calendar data
+  run() {
     this.fetchCalendars()
       .then((data) => this.parseResults(data))
       .then((data) => this.addMarkup(data));
-
-    // set a timer to refresh the calendars
-    this.startInterval();
   },
 
+  // set an interal to keep the calendar data up to date
   startInterval() {
     this.calendarTimer = setInterval(
-      this.fetchCalendars.bind(this),
+      this.run.bind(this),
       REFRESH_INTERVAL,
     );
-  },
-
-  getTargetDiv() {
-    return document.querySelectorAll(TARGET_DIV)[0].parentNode;
   },
 
   fetchCalendars() {
@@ -63,23 +63,42 @@ const FastmailCalendarOverview = {
   },
 
   addMarkup(events) {
+    // save some dom refs
     this.wrapper = document.getElementById(WRAPPER_ID);
-    const newContent = Templates.wrapper(events);
+    const targetDiv = document.querySelectorAll(TARGET_DIV);
 
-    if (this.wrapper) {
-      this.wrapper.innerHTML = newContent;
-    } else {
-      this.getTargetDiv().appendChild(newContent);
+    if (targetDiv && targetDiv.length) {
+      this.targetDiv = targetDiv[0].parentNode;
     }
 
+    // if both the wrapper and target are missing, fastmail hasn't loaded yet,
+    // so short circuit and try again in a little while
+    if (!this.wrapper && !this.targetDiv) {
+      setTimeout(() => {
+        this.addMarkup(events);
+      }, 500);
+
+      return;
+    }
+
+    // remove the calendar overview if it already exists
+    if (this.wrapper) {
+      this.wrapper.parentNode.removeChild(this.wrapper);
+    }
+
+    const content = Templates.wrapper(events);
+
+    this.targetDiv.appendChild(content);
     this.wrapper = document.getElementById(WRAPPER_ID);
     this.sizeWrapper();
-
-    window.addEventListener('resize', this.sizeWrapper.bind(this));
   },
 
   sizeWrapper() {
-    const columnHeight = this.getTargetDiv().getBoundingClientRect().height;
+    if (!this.wrapper || !this.targetDiv) {
+      return;
+    }
+
+    const columnHeight = this.targetDiv.getBoundingClientRect().height;
     const lastColumnElement = document.querySelectorAll(LAST_FASTMAIL_ELEMENT)[0];
     const lastElementBottom = lastColumnElement.getBoundingClientRect().bottom;
     const usageHeight = document.querySelectorAll(TARGET_DIV)[0].getBoundingClientRect().height;
