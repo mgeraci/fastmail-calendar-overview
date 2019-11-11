@@ -1,7 +1,7 @@
 {
 	"name": "Fastmail Calendar Overview",
 	"description": "Show an overview of your day's calendar events Fastmail's leftbar.",
-	"version": "2.0",
+	"version": "2.0.1",
 	"content_scripts": [ {
 		"matches": [
 			"http://*.fastmail.com/*",
@@ -19,8 +19,8 @@
 		"run_at": "document_idle"
 	} ],
 	"permissions": [
+		"https://user.fm/*",
 		"storage"
 	],
-	"key": "OZQb9QImtrQt9dfKvkam0GK95alwJufrBb90LoSFh5g=",
 	"manifest_version": 2
 }
