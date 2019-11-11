@@ -42,7 +42,7 @@ export default {
 
       // finish and commit an event
       if (this.isLine(line, 'END:VEVENT')) {
-        this.processDateFields(event);
+        event = this.processDateFields(event);
 
         // kill bad descriptions
         if (event.description && event.description.indexOf('View your event at https://www.google.com/calendar/event') >= 0) {
@@ -114,7 +114,9 @@ export default {
 
   // for each of `startTime` and `endTime`, convert the vcal-format timestamp to
   // a unix timestamp, and generate a 'pretty' time for display.
-  processDateFields(event) {
+  processDateFields(_event) {
+    let event = { ..._event };
+
     ['start', 'end'].some((field) => {
       const time = event[`${field}Time`];
       const parsedTime = this.parseDate(time);
@@ -135,6 +137,9 @@ export default {
       if (time) {
         event[`${field}Timestamp`] = parsedTime;
       }
+
+      // returning false in a `some` loop causes it to continue
+      return false;
     });
 
     // if there's a start and end timestamp, calculate the duration
@@ -153,11 +158,14 @@ export default {
     }
 
     if (!event.rrule) {
-      return this.addDateInfo(event);
+      event = this.addDateInfo(event);
     }
+
+    return event;
   },
 
-  addDateInfo(event) {
+  addDateInfo(_event) {
+    const event = { ..._event };
     const eventDateObj = new Date(event.startTimestamp);
 
     const year = eventDateObj.getFullYear();
@@ -184,13 +192,15 @@ export default {
     // add a time, or 'all day'
     if (event.allDay) {
       event.timeString = false;
-      return;
+
+      return event;
     }
 
     const hours = eventDateObj.getHours();
     const minutes = eventDateObj.getMinutes();
-
     event.timeString = `${this.stringPadNumber(hours)}:${this.stringPadNumber(minutes)}`;
+
+    return event;
   },
 
   stringPadNumber(num) {
@@ -251,7 +261,8 @@ export default {
 
   // given an event with an `rrule` flag, generate individual events into the
   // future
-  getEventsFromRecurringEvent(event) {
+  getEventsFromRecurringEvent(_event) {
+    const event = { ..._event };
     const res = [];
 
     // convert the starttime into a format that rrule understands (in
@@ -287,15 +298,15 @@ export default {
 
       // make a new instance of the recurring event, but delete the non-
       // applicable fields, and replace the start with this instance's
-      const eventInstance = { ...event };
+      let eventInstance = { ...event };
 
       delete eventInstance.startTime;
       delete eventInstance.endTime;
       delete eventInstance.endTimestamp;
 
       eventInstance.startTimestamp = eventDate.getTime();
+      eventInstance = this.addDateInfo(eventInstance);
 
-      this.addDateInfo(eventInstance);
       res.push(eventInstance);
     });
 
