@@ -48,11 +48,11 @@ The root of the app is `src/index.js`.
 
 ### Adding to Firefox
 To add the extension to Firefox, go to the "This Firefox" section of the
-[firefox debugging page](about:debugging#/runtime/this-firefox), expand the
+firefox debugging page (`about:debugging#/runtime/this-firefox`), expand the
 "Temporary extensions" section, press the "Load temporary Add-on" button,
 navigate into the cloned repo, and select the `manifest.json` file.
 
 ### Adding to Chrome
-To add the extension to Chrome, go to your [extensions page](chrome://extensions/),
+To add the extension to Chrome, go to your extensions page (`chrome://extensions/`),
 click the "Load Unpacked Extension" button, navigate to the extension folder,
 and click "open".
