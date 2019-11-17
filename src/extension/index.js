@@ -7,6 +7,7 @@ import {
   MAX_HEIGHT,
   MIN_HEIGHT,
   REFRESH_INTERVAL,
+  FETCH_STATUSES,
 } from './util/constants';
 
 import BrowserStorage from '../browserStorage';
@@ -49,22 +50,64 @@ const FastmailCalendarOverview = {
     );
   },
 
+  /**
+   * Get calendar data, gracefully handling non-200 codes.
+   * @return {Array} res - an array of calendar results
+   * @return {Object} res[] - a calendar result
+   * @return {string} res[].name - the calendar's name
+   * @return {string} res[].status - a success or failure flag
+   * @return {any} res[].data - the returned data
+   */
   fetchCalendars() {
-    const fetches = this.calendars.map((calendar) => fetch(calendar.url));
+    const results = [];
 
-    return Promise.all(fetches)
-      .then((responses) => (
-        Promise.all(responses.map((res) => res.text()))))
-      .catch((err) => {
-        console.error('Fastmail Calendar Overview failed to fetch calendars:', err); // eslint-disable-line
+    return new Promise((resolve) => {
+      this.calendars.forEach((calendar) => {
+        fetch(calendar.url)
+          .then((res) => {
+            if (res.status === 200) {
+              return res;
+            }
+
+            throw new Error(`Calendar ${calendar.name} returned status code ${res.status}`);
+          })
+          .then((res) => res.text())
+          .then((res) => {
+            results.push({
+              name: calendar.name,
+              status: FETCH_STATUSES.success,
+              data: res,
+            });
+
+            if (results.length === this.calendars.length) {
+              resolve(results);
+            }
+          })
+          .catch((err) => {
+            results.push({
+              name: calendar.name,
+              status: FETCH_STATUSES.error,
+              data: err,
+            });
+
+            if (results.length === this.calendars.length) {
+              resolve(results);
+            }
+          });
       });
+    });
   },
 
   parseResults(results) {
     let events = [];
 
-    results.forEach((result, i) => {
-      const parsedEvents = vCalendar.parse(result, this.calendars[i].name);
+    results.forEach((result) => {
+      if (result.status === FETCH_STATUSES.error) {
+        console.error(`Fastmail Calendar Overview got an error fetching ${result.name}: ${result.data}`); // eslint-disable-line
+        return;
+      }
+
+      const parsedEvents = vCalendar.parse(result.data, result.name);
       events = events.concat(parsedEvents);
     });
 

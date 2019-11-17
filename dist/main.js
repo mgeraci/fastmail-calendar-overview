@@ -18140,24 +18140,63 @@ var FastmailCalendarOverview = {
   startInterval: function startInterval() {
     this.calendarTimer = setInterval(this.run.bind(this), _util_constants__WEBPACK_IMPORTED_MODULE_0__["REFRESH_INTERVAL"]);
   },
+
+  /**
+   * Get calendar data, gracefully handling non-200 codes.
+   * @return {Array} res - an array of calendar results
+   * @return {Object} res[] - a calendar result
+   * @return {string} res[].name - the calendar's name
+   * @return {string} res[].status - a success or failure flag
+   * @return {any} res[].data - the returned data
+   */
   fetchCalendars: function fetchCalendars() {
-    var fetches = this.calendars.map(function (calendar) {
-      return fetch(calendar.url);
-    });
-    return Promise.all(fetches).then(function (responses) {
-      return Promise.all(responses.map(function (res) {
-        return res.text();
-      }));
-    })["catch"](function (err) {
-      console.error('Fastmail Calendar Overview failed to fetch calendars:', err); // eslint-disable-line
+    var _this3 = this;
+
+    var results = [];
+    return new Promise(function (resolve) {
+      _this3.calendars.forEach(function (calendar) {
+        fetch(calendar.url).then(function (res) {
+          if (res.status === 200) {
+            return res;
+          }
+
+          throw new Error("Calendar ".concat(calendar.name, " returned status code ").concat(res.status));
+        }).then(function (res) {
+          return res.text();
+        }).then(function (res) {
+          results.push({
+            name: calendar.name,
+            status: _util_constants__WEBPACK_IMPORTED_MODULE_0__["FETCH_STATUSES"].success,
+            data: res
+          });
+
+          if (results.length === _this3.calendars.length) {
+            resolve(results);
+          }
+        })["catch"](function (err) {
+          results.push({
+            name: calendar.name,
+            status: _util_constants__WEBPACK_IMPORTED_MODULE_0__["FETCH_STATUSES"].error,
+            data: err
+          });
+
+          if (results.length === _this3.calendars.length) {
+            resolve(results);
+          }
+        });
+      });
     });
   },
   parseResults: function parseResults(results) {
-    var _this3 = this;
-
     var events = [];
-    results.forEach(function (result, i) {
-      var parsedEvents = _vCalendar__WEBPACK_IMPORTED_MODULE_2__["default"].parse(result, _this3.calendars[i].name);
+    results.forEach(function (result) {
+      if (result.status === _util_constants__WEBPACK_IMPORTED_MODULE_0__["FETCH_STATUSES"].error) {
+        console.error("Fastmail Calendar Overview got an error fetching ".concat(result.name, ": ").concat(result.data)); // eslint-disable-line
+
+        return;
+      }
+
+      var parsedEvents = _vCalendar__WEBPACK_IMPORTED_MODULE_2__["default"].parse(result.data, result.name);
       events = events.concat(parsedEvents);
     });
     events = _vCalendar__WEBPACK_IMPORTED_MODULE_2__["default"].groupEvents(events);
@@ -18273,7 +18312,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!*****************************************!*\
   !*** ./src/extension/util/constants.js ***!
   \*****************************************/
-/*! exports provided: TARGET_DIV, LAST_FASTMAIL_ELEMENT, WRAPPER_ID, MAX_HEIGHT, MIN_HEIGHT, REFRESH_INTERVAL, EVENT_HORIZON, MS_PER_DAY, VCAL_FIELDS, MONTHS, DAYS_SHORT */
+/*! exports provided: TARGET_DIV, LAST_FASTMAIL_ELEMENT, WRAPPER_ID, MAX_HEIGHT, MIN_HEIGHT, REFRESH_INTERVAL, EVENT_HORIZON, MS_PER_DAY, FETCH_STATUSES, VCAL_FIELDS, MONTHS, DAYS_SHORT */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18286,6 +18325,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REFRESH_INTERVAL", function() { return REFRESH_INTERVAL; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EVENT_HORIZON", function() { return EVENT_HORIZON; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MS_PER_DAY", function() { return MS_PER_DAY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FETCH_STATUSES", function() { return FETCH_STATUSES; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VCAL_FIELDS", function() { return VCAL_FIELDS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MONTHS", function() { return MONTHS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DAYS_SHORT", function() { return DAYS_SHORT; });
@@ -18303,7 +18343,11 @@ var MIN_HEIGHT = 150; // how often the calendars should refetch (15 minutes)
 var REFRESH_INTERVAL = 1000 * 60 * 15; // how far into the future to show events (1 month)
 
 var EVENT_HORIZON = 1000 * 60 * 60 * 24 * 30;
-var MS_PER_DAY = 86400000; // the fields in a vcal event
+var MS_PER_DAY = 86400000;
+var FETCH_STATUSES = {
+  success: 'success',
+  error: 'error'
+}; // the fields in a vcal event
 
 var VCAL_FIELDS = {
   UID: 'id',
