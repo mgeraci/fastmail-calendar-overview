@@ -1,0 +1,43 @@
+$gray-1: #333;
+$gray-2: #666;
+$gray-3: #999;
+$gray-4: #aaa;
+$gray-5: #ccc;
+
+// fade in/out an element then toggle its visibility
+// - direction: hide or show
+// - time: transition time in ms
+// - delay (optional): how long before the transition kicks in
+@mixin fade-and-hide($direction, $time, $delay: 0) {
+  @if $direction == hide {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity $time ease $delay, visibility 0ms linear ($time + $delay + 100);
+  }
+
+  @if $direction == show {
+    opacity: 1;
+    visibility: visible;
+    transition: visibility 0ms linear, opacity $time ease ($delay + 10);
+  }
+}
+
+@mixin theme(
+  $day-background,
+  $day-color,
+  $event-time-color,
+  $event-title-color,
+) {
+  h3 {
+    background: $day-background;
+    color: $day-color;
+  }
+
+  .event {
+    color: $event-title-color;
+  }
+
+  .time {
+    color: $event-time-color;
+  }
+}

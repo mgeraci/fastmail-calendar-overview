@@ -1,7 +1,7 @@
 # Fastmail Calendar Overview
 This browser extension requests calendar data from a list of calendars and adds
-an overview of your upcoming events to the sidebar on Fastmail. It works with
-both Firefox and Chrome.
+an overview of your upcoming events to the sidebar on Fastmail. It supports
+Fastmail's light and dark themes, and works with both Firefox and Chrome.
 
 Note that your calendars must be Fastmail calendars, hosted on `https://user.fm`.
 

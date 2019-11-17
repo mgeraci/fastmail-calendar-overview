@@ -1,33 +1,4 @@
-$gray-1: #333;
-$gray-2: #666;
-$gray-3: #aaa;
-$gray-4: #ccc;
-
-// fastmail changes
-.v-FolderTree {
-  position: relative;
-  z-index: 2;
-  background: #000;
-  box-shadow: 0 3px 5px black;
-}
-
-// fade in/out an element then toggle its visibility
-// - direction: hide or show
-// - time: transition time in ms
-// - delay (optional): how long before the transition kicks in
-@mixin fade-and-hide($direction, $time, $delay: 0) {
-  @if $direction == hide {
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity $time ease $delay, visibility 0ms linear ($time + $delay + 100);
-  }
-
-  @if $direction == show {
-    opacity: 1;
-    visibility: visible;
-    transition: visibility 0ms linear, opacity $time ease ($delay + 10);
-  }
-}
+@import "util/variables";
 
 #fastmail-calendar-overview-wrapper {
   position: absolute;
@@ -35,7 +6,25 @@ $gray-4: #ccc;
   overflow: auto;
   width: 100%;
   padding: 0 10px;
-  color: $gray-3;
+  color: $gray-4;
+
+  &.dark {
+    @include theme(
+      $day-background: $gray-1,
+      $day-color: $gray-4,
+      $event-time-color: $gray-3,
+      $event-title-color: $gray-5,
+    );
+  }
+
+  &.light {
+    @include theme(
+      $day-background: #ddd,
+      $day-color: #1f1f1f,
+      $event-time-color: #777,
+      $event-title-color: #1f1f1f,
+    );
+  }
 
   &,
   * {
@@ -53,7 +42,6 @@ $gray-4: #ccc;
       width: 100%;
       padding: 3px 5px;
       margin-bottom: 3px;
-      background: $gray-1;
     }
 
     .event {
@@ -66,10 +54,6 @@ $gray-4: #ccc;
         }
       }
 
-      .time {
-        color: $gray-2;
-      }
-
       .details {
         @include fade-and-hide(hide, 200ms);
         position: absolute;
@@ -80,7 +64,7 @@ $gray-4: #ccc;
         height: auto;
         min-height: 20px;
         padding: 10px;
-        background: $gray-4;
+        background: $gray-5;
         color: $gray-1;
 
         h3 {
