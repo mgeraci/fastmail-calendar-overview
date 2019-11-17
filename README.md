@@ -10,32 +10,8 @@ To install:
 1) `git clone git@github.com:mgeraci/fastmail-calendar-overview.git`
 1) `cd fastmail-calendar-overview`
 1) `yarn install`
-1) Create a list of calendars (see below)
-
-## Adding calendars
-While in the future this should be moved to an "options" pane to allow non-
-technical users to add calendars, for now, create the file `src/calendars.js`.
-This is a list of the calendars that the extension should poll, and is git
-ignored.
-
-Note that your calendars must be Fastmail calendars, hosted on `https://user.fm`.
-To get your calendar url, go to the "Calendars" section of Fastmail's settings
-page, click the "Edit & share" button next to the calendar that you'd like to
-add, make sure the "Full event details" checkbox is selected, and copy the url
-listed.
-
-The contents should be in the format:
-
-```.js
-export default [
-  {
-    name: 'My Calendar', // replace with your calendar name
-    url: 'https://user.fm/calendar/...', // replace with your calendar url
-  },
-
-  // add as many calendar entries as you'd like!
-];
-```
+1) Add to your browser (see below)
+1) Create a list of calendars in the extension preferences
 
 ## Compilation
 To compile the app for development, run `yarn watch`. This will start a webpack

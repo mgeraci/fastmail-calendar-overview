@@ -1,3 +1,6 @@
 module.exports = {
-  extends: 'airbnb-base',
+  extends: 'airbnb',
+  rules: {
+    'jsx-a11y/label-has-associated-control': [0],
+  },
 };

@@ -1,21 +1,34 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  entry: './src/index.js',
+  devtool: 'source-map',
+  entry: {
+    main: './src/extension/index.js',
+    options: './src/options/index.js',
+  },
   output: {
-    filename: 'main.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
   },
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        use: ['babel-loader'],
+        resolve: {
+          extensions: ['.js', '.jsx'],
+        },
+      },
+      {
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         loader: 'eslint-loader',
       },
       {
-        test: /\.s[ac]ss$/i,
+        test: /\.(css|scss|sass)$/i,
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
@@ -26,5 +39,11 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({}),
+    new CopyWebpackPlugin([
+      {
+        from: './src/options/index.html',
+        to: 'options.html',
+      }
+    ]),
   ],
 };

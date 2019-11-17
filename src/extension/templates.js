@@ -1,6 +1,6 @@
 /* global document */
 
-import { WRAPPER_ID } from './constants';
+import { WRAPPER_ID } from './util/constants';
 
 export default {
   wrapper(days) {

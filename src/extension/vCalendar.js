@@ -8,7 +8,7 @@ import {
   EVENT_HORIZON,
   VCAL_FIELDS,
   MS_PER_DAY,
-} from './constants';
+} from './util/constants';
 
 export default {
   // given data from a calendar url, make an array of events

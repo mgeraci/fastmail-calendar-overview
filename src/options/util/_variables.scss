@@ -1,0 +1,100 @@
+$Colors-white: #ffffff;
+
+$Colors-blue-1: #104da1;
+$Colors-blue-2: #3260c7;
+$Colors-blue-3: #4c7bd9;
+$Colors-blue-4: #9dbaf2;
+$Colors-blue-5: #d5e0f8;
+$Colors-blue-6: #e4edfd;
+
+$Colors-gray-1: #1e1e1e;
+$Colors-gray-2: #2A2F35;
+$Colors-gray-3: #949aa6;
+$Colors-gray-4: #aeb4bf;
+$Colors-gray-5: #ccd0d9;
+$Colors-gray-6: #ebedf2;
+$Colors-gray-7: #f3f5f9;
+
+$Colors-green-1: #1fc174;
+$Colors-green-2: #00d280;
+$Colors-green-3: #48e588;
+$Colors-green-5: #d6f4df;
+$Colors-green-4: #bcf1cd;
+$Colors-green-6: #76ee9d;
+
+$Colors-red-1: #f95133;
+$Colors-red-3: #ffc0bb;
+$Colors-red-2: #fb674e;
+$Colors-red-4: #fa8575;
+$Colors-red-5: #e84832;
+
+$loader-size: 40px;
+$button-height: 46px;
+$remove-button-size: 24px;
+$body-padding: 5%;
+$footer-padding: 20px;
+$gutter: 30px;
+
+@mixin content-width {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 800px;
+}
+
+@mixin font-headline {
+  font-size: 22px;
+  line-height: 31px;
+  font-weight: 700;
+}
+
+@mixin font-body {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+}
+
+@mixin font-note {
+  font-size: 14px;
+  line-height: 21px;
+}
+
+@mixin bare-button {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+@mixin button($background-color, $text-color) {
+  @include bare-button;
+  @include font-body;
+  display: inline-block;
+  width: auto;
+  height: $button-height;
+  padding: 0 20px;
+  line-height: $button-height;
+  color: $text-color;
+  background: $background-color;
+  border-radius: 3px;
+
+  &:hover {
+    background: darken($background-color, 5%);
+    cursor: pointer;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &[disabled] {
+    cursor: default;
+
+    &,
+    &:hover {
+      background: $Colors-gray-6;
+      color: $Colors-gray-3;
+    }
+  }
+}

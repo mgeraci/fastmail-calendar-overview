@@ -1,0 +1,255 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+body {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+.options {
+  padding: 5%;
+  padding-bottom: calc(40px + 46px + 30px);
+  background: #f3f5f9;
+  font-family: "Helvetica Neue", Helvetica, Arial, "sans-serif";
+  color: #1e1e1e;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400; }
+  .options,
+  .options * {
+    box-sizing: border-box; }
+  .options-content {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 800px; }
+  .options-title {
+    font-size: 22px;
+    line-height: 31px;
+    font-weight: 700; }
+    .options-title-separator {
+      border: none;
+      border-top: 1px solid #ccd0d9;
+      margin: 10px 0 40px; }
+  .options-description-code {
+    display: inline;
+    background: #ebedf2;
+    padding: 1px 3px;
+    border: 1px solid #ccd0d9;
+    border-radius: 2px;
+    font-family: Monaco, monospace;
+    font-size: 0.8em;
+    line-height: 0; }
+  .options-calendar {
+    position: relative;
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 3%;
+    border: 0;
+    background: #ebedf2;
+    border-radius: 5px; }
+    .options-calendar-field + .options-calendar-field {
+      margin-top: 20px; }
+    .options-calendar-label {
+      display: block;
+      width: 100%;
+      font-weight: 500; }
+    .options-calendar-input {
+      margin-top: 3px;
+      padding: 6px 8px;
+      border: 1px solid #aeb4bf;
+      border-radius: 3px;
+      transition: border-color 75ms linear;
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 400; }
+      .options-calendar-input:focus {
+        outline: none;
+        border-color: #4c7bd9; }
+      .options-calendar-input--url {
+        width: 100%; }
+    .options-calendar-error {
+      display: block;
+      margin-top: 15px;
+      font-size: 14px;
+      line-height: 21px;
+      color: #f95133; }
+    .options-calendar--hasError {
+      box-shadow: 0 0 4px #fa8575; }
+    .options-calendar-remove {
+      background: transparent;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+      display: block;
+      position: absolute;
+      overflow: hidden;
+      top: 10px;
+      right: 10px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      font-size: 22px;
+      line-height: 21.6px;
+      text-align: center;
+      background: #ccd0d9;
+      transition: background-color 25ms linear, color 25ms linear; }
+      .options-calendar-remove:hover {
+        background: #e84832;
+        color: #ffffff; }
+      .options-calendar-remove:focus {
+        outline: none; }
+      .options-calendar-remove-icon {
+        display: block;
+        width: 100%;
+        height: 100%; }
+      .options-calendar-remove-text {
+        position: absolute;
+        top: 24px; }
+  .options-calendar, .options-add, .options-footer {
+    margin-top: 30px; }
+  .options-add {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+    display: inline-block;
+    width: auto;
+    height: 46px;
+    padding: 0 20px;
+    line-height: 46px;
+    color: #2A2F35;
+    background: #ccd0d9;
+    border-radius: 3px; }
+    .options-add:hover {
+      background: #bdc3ce;
+      cursor: pointer; }
+    .options-add:focus {
+      outline: none; }
+    .options-add[disabled] {
+      cursor: default; }
+      .options-add[disabled], .options-add[disabled]:hover {
+        background: #ebedf2;
+        color: #949aa6; }
+  .options-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 5%;
+    background: #f3f5f9;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2); }
+    .options-footer-content {
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 800px; }
+    .options-footer-message {
+      margin-left: 15px; }
+      .options-footer-message--success {
+        color: #1fc174; }
+      .options-footer-message--error {
+        color: #e84832; }
+  .options-save {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+    display: inline-block;
+    width: auto;
+    height: 46px;
+    padding: 0 20px;
+    line-height: 46px;
+    color: #ffffff;
+    background: #4c7bd9;
+    border-radius: 3px; }
+    .options-save:hover {
+      background: #376bd5;
+      cursor: pointer; }
+    .options-save:focus {
+      outline: none; }
+    .options-save[disabled] {
+      cursor: default; }
+      .options-save[disabled], .options-save[disabled]:hover {
+        background: #ebedf2;
+        color: #949aa6; }
+  .options-loading-error {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    text-align: center;
+    color: #e84832; }
+    .options-loading-error-link {
+      color: #e84832; }
+      .options-loading-error-link:hover {
+        color: #fb674e; }
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg); }
+  to {
+    transform: rotate(360deg); } }
+
+.loader {
+  position: absolute;
+  top: calc(50% - 20px);
+  left: calc(50% - 20px);
+  width: 40px;
+  height: 40px;
+  border-top: 3px solid rgba(76, 123, 217, 0.7);
+  border-right: 3px solid transparent;
+  border-radius: 50%;
+  animation: rotate 800ms linear infinite; }
+
+
+/*# sourceMappingURL=options.css.map*/

@@ -7,20 +7,30 @@ import {
   MAX_HEIGHT,
   MIN_HEIGHT,
   REFRESH_INTERVAL,
-} from './constants';
+} from './util/constants';
 
-import CALENDARS from './calendars';
+import BrowserStorage from '../browserStorage';
 import vCalendar from './vCalendar';
 import Templates from './templates';
 
-import './style.scss';
+import './index.scss';
 
 const FastmailCalendarOverview = {
   init() {
-    console.log('Fastmail Calendar Overview, calendars:', CALENDARS); // eslint-disable-line
+    const storage = new BrowserStorage();
 
-    this.run();
-    this.startInterval();
+    // get the user's calendars from browser storage, then run the rest of the
+    // script
+    storage.get().then((res) => {
+      console.log('Fastmail Calendar Overview, calendars:', res); // eslint-disable-line
+
+      this.calendars = res;
+      this.run();
+      this.startInterval();
+    }).catch((err) => {
+      console.error('Fastmail Calendar Overview failed to load calendars from storage:', err); // eslint-disable-line
+    });
+
     window.addEventListener('resize', this.sizeWrapper.bind(this));
   },
 
@@ -40,18 +50,21 @@ const FastmailCalendarOverview = {
   },
 
   fetchCalendars() {
-    const fetches = CALENDARS.map((calendar) => fetch(calendar.url));
+    const fetches = this.calendars.map((calendar) => fetch(calendar.url));
 
     return Promise.all(fetches)
       .then((responses) => (
-        Promise.all(responses.map((res) => res.text()))));
+        Promise.all(responses.map((res) => res.text()))))
+      .catch((err) => {
+        console.error('Fastmail Calendar Overview failed to fetch calendars:', err); // eslint-disable-line
+      });
   },
 
   parseResults(results) {
     let events = [];
 
     results.forEach((result, i) => {
-      const parsedEvents = vCalendar.parse(result, CALENDARS[i].name);
+      const parsedEvents = vCalendar.parse(result, this.calendars[i].name);
       events = events.concat(parsedEvents);
     });
 
