@@ -18095,12 +18095,14 @@ var STORAGE_SUCCESS = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _util_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util/constants */ "./src/extension/util/constants.js");
-/* harmony import */ var _browserStorage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../browserStorage */ "./src/browserStorage/index.js");
-/* harmony import */ var _vCalendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./vCalendar */ "./src/extension/vCalendar.js");
-/* harmony import */ var _templates__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./templates */ "./src/extension/templates.js");
-/* harmony import */ var _index_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./index.scss */ "./src/extension/index.scss");
-/* harmony import */ var _index_scss__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_index_scss__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _util_rgbToHsl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util/rgbToHsl */ "./src/extension/util/rgbToHsl.js");
+/* harmony import */ var _browserStorage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../browserStorage */ "./src/browserStorage/index.js");
+/* harmony import */ var _vCalendar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./vCalendar */ "./src/extension/vCalendar.js");
+/* harmony import */ var _templates__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./templates */ "./src/extension/templates.js");
+/* harmony import */ var _index_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./index.scss */ "./src/extension/index.scss");
+/* harmony import */ var _index_scss__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_index_scss__WEBPACK_IMPORTED_MODULE_5__);
 /* global window, document, fetch */
+
 
 
 
@@ -18110,7 +18112,7 @@ var FastmailCalendarOverview = {
   init: function init() {
     var _this = this;
 
-    var storage = new _browserStorage__WEBPACK_IMPORTED_MODULE_1__["default"](); // get the user's calendars from browser storage, then run the rest of the
+    var storage = new _browserStorage__WEBPACK_IMPORTED_MODULE_2__["default"](); // get the user's calendars from browser storage, then run the rest of the
     // script
 
     storage.get().then(function (res) {
@@ -18196,10 +18198,10 @@ var FastmailCalendarOverview = {
         return;
       }
 
-      var parsedEvents = _vCalendar__WEBPACK_IMPORTED_MODULE_2__["default"].parse(result.data, result.name);
+      var parsedEvents = _vCalendar__WEBPACK_IMPORTED_MODULE_3__["default"].parse(result.data, result.name);
       events = events.concat(parsedEvents);
     });
-    events = _vCalendar__WEBPACK_IMPORTED_MODULE_2__["default"].groupEvents(events);
+    events = _vCalendar__WEBPACK_IMPORTED_MODULE_3__["default"].groupEvents(events);
     console.log('Fastmail Calendar Overview, grouped events:', events); // eslint-disable-line
 
     return Promise.resolve(events);
@@ -18229,9 +18231,11 @@ var FastmailCalendarOverview = {
       this.wrapper.parentNode.removeChild(this.wrapper);
     }
 
-    var content = _templates__WEBPACK_IMPORTED_MODULE_3__["default"].wrapper(events);
+    var theme = this.getTheme();
+    var content = _templates__WEBPACK_IMPORTED_MODULE_4__["default"].wrapper(events, theme);
     this.targetDiv.appendChild(content);
     this.wrapper = document.getElementById(_util_constants__WEBPACK_IMPORTED_MODULE_0__["WRAPPER_ID"]);
+    this.wrapper.classList.add(theme);
     this.sizeWrapper();
   },
   sizeWrapper: function sizeWrapper() {
@@ -18248,6 +18252,19 @@ var FastmailCalendarOverview = {
     this.wrapper.style.height = "".concat(wrapperHeight, "px"); // hide it entirely when it's too small to read
 
     this.wrapper.style.display = wrapperHeight < _util_constants__WEBPACK_IMPORTED_MODULE_0__["MIN_HEIGHT"] ? 'none' : 'block';
+  },
+  getTheme: function getTheme() {
+    var res = _util_constants__WEBPACK_IMPORTED_MODULE_0__["THEMES"].light;
+
+    try {
+      var rootEl = document.querySelectorAll(_util_constants__WEBPACK_IMPORTED_MODULE_0__["FASTMAIL_ROOT_DIV"])[0];
+      var backgroundColor = window.getComputedStyle(rootEl).backgroundColor.trim().replace(/^rgb\(/, '').replace(/\)/, '').replace(/\s/g, '').split(',');
+      var backgroundColorHSL = Object(_util_rgbToHsl__WEBPACK_IMPORTED_MODULE_1__["default"])(backgroundColor[0], backgroundColor[1], backgroundColor[2]);
+      res = backgroundColorHSL[2] > 0.5 ? _util_constants__WEBPACK_IMPORTED_MODULE_0__["THEMES"].light : _util_constants__WEBPACK_IMPORTED_MODULE_0__["THEMES"].dark;
+    } catch (err) {// noop
+    }
+
+    return res;
   }
 }; // run the initiliazer with a self-executing function
 
@@ -18312,11 +18329,12 @@ __webpack_require__.r(__webpack_exports__);
 /*!*****************************************!*\
   !*** ./src/extension/util/constants.js ***!
   \*****************************************/
-/*! exports provided: TARGET_DIV, LAST_FASTMAIL_ELEMENT, WRAPPER_ID, MAX_HEIGHT, MIN_HEIGHT, REFRESH_INTERVAL, EVENT_HORIZON, MS_PER_DAY, FETCH_STATUSES, VCAL_FIELDS, MONTHS, DAYS_SHORT */
+/*! exports provided: FASTMAIL_ROOT_DIV, TARGET_DIV, LAST_FASTMAIL_ELEMENT, WRAPPER_ID, MAX_HEIGHT, MIN_HEIGHT, REFRESH_INTERVAL, EVENT_HORIZON, MS_PER_DAY, FETCH_STATUSES, THEMES, VCAL_FIELDS, MONTHS, DAYS_SHORT */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FASTMAIL_ROOT_DIV", function() { return FASTMAIL_ROOT_DIV; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TARGET_DIV", function() { return TARGET_DIV; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LAST_FASTMAIL_ELEMENT", function() { return LAST_FASTMAIL_ELEMENT; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WRAPPER_ID", function() { return WRAPPER_ID; });
@@ -18326,10 +18344,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EVENT_HORIZON", function() { return EVENT_HORIZON; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MS_PER_DAY", function() { return MS_PER_DAY; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FETCH_STATUSES", function() { return FETCH_STATUSES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "THEMES", function() { return THEMES; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VCAL_FIELDS", function() { return VCAL_FIELDS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MONTHS", function() { return MONTHS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DAYS_SHORT", function() { return DAYS_SHORT; });
-// the calendar gets added as a sibling to this element
+// the root div for fastmail. this element's background color is used as a
+// canary for what theme to use.
+var FASTMAIL_ROOT_DIV = '.v-Root'; // the calendar gets added as a sibling to this element
+
 var TARGET_DIV = '.v-Quota'; // the last element in the fastmail sidebar; this is used to determine the
 // height of the calendar overview
 
@@ -18347,6 +18369,10 @@ var MS_PER_DAY = 86400000;
 var FETCH_STATUSES = {
   success: 'success',
   error: 'error'
+};
+var THEMES = {
+  light: 'light',
+  dark: 'dark'
 }; // the fields in a vcal event
 
 var VCAL_FIELDS = {
@@ -18360,6 +18386,66 @@ var VCAL_FIELDS = {
 };
 var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 var DAYS_SHORT = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
+
+/***/ }),
+
+/***/ "./src/extension/util/rgbToHsl.js":
+/*!****************************************!*\
+  !*** ./src/extension/util/rgbToHsl.js ***!
+  \****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return rgbToHsl; });
+/* eslint-disable */
+// taken from: https://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
+
+/**
+ * Converts an RGB color value to HSL. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+ * Assumes r, g, and b are contained in the set [0, 255] and
+ * returns h, s, and l in the set [0, 1].
+ *
+ * @param   Number  r       The red color value
+ * @param   Number  g       The green color value
+ * @param   Number  b       The blue color value
+ * @return  Array           The HSL representation
+ */
+function rgbToHsl(r, g, b) {
+  r /= 255, g /= 255, b /= 255;
+  var max = Math.max(r, g, b),
+      min = Math.min(r, g, b);
+  var h,
+      s,
+      l = (max + min) / 2;
+
+  if (max == min) {
+    h = s = 0; // achromatic
+  } else {
+    var d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+    switch (max) {
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
+
+      case g:
+        h = (b - r) / d + 2;
+        break;
+
+      case b:
+        h = (r - g) / d + 4;
+        break;
+    }
+
+    h /= 6;
+  }
+
+  return [h, s, l];
+}
 
 /***/ }),
 

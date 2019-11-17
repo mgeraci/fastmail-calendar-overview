@@ -1,3 +1,7 @@
+// the root div for fastmail. this element's background color is used as a
+// canary for what theme to use.
+export const FASTMAIL_ROOT_DIV = '.v-Root';
+
 // the calendar gets added as a sibling to this element
 export const TARGET_DIV = '.v-Quota';
 
@@ -23,6 +27,11 @@ export const MS_PER_DAY = 86400000;
 export const FETCH_STATUSES = {
   success: 'success',
   error: 'error',
+};
+
+export const THEMES = {
+  light: 'light',
+  dark: 'dark',
 };
 
 // the fields in a vcal event

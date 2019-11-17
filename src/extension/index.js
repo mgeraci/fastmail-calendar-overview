@@ -1,6 +1,7 @@
 /* global window, document, fetch */
 
 import {
+  FASTMAIL_ROOT_DIV,
   TARGET_DIV,
   LAST_FASTMAIL_ELEMENT,
   WRAPPER_ID,
@@ -8,7 +9,10 @@ import {
   MIN_HEIGHT,
   REFRESH_INTERVAL,
   FETCH_STATUSES,
+  THEMES,
 } from './util/constants';
+
+import rgbToHsl from './util/rgbToHsl';
 
 import BrowserStorage from '../browserStorage';
 import vCalendar from './vCalendar';
@@ -142,10 +146,12 @@ const FastmailCalendarOverview = {
       this.wrapper.parentNode.removeChild(this.wrapper);
     }
 
-    const content = Templates.wrapper(events);
+    const theme = this.getTheme();
+    const content = Templates.wrapper(events, theme);
 
     this.targetDiv.appendChild(content);
     this.wrapper = document.getElementById(WRAPPER_ID);
+    this.wrapper.classList.add(theme);
     this.sizeWrapper();
   },
 
@@ -169,6 +175,33 @@ const FastmailCalendarOverview = {
 
     // hide it entirely when it's too small to read
     this.wrapper.style.display = wrapperHeight < MIN_HEIGHT ? 'none' : 'block';
+  },
+
+  getTheme() {
+    let res = THEMES.light;
+
+    try {
+      const rootEl = document.querySelectorAll(FASTMAIL_ROOT_DIV)[0];
+      const backgroundColor = window.getComputedStyle(rootEl)
+        .backgroundColor
+        .trim()
+        .replace(/^rgb\(/, '')
+        .replace(/\)/, '')
+        .replace(/\s/g, '')
+        .split(',');
+
+      const backgroundColorHSL = rgbToHsl(
+        backgroundColor[0],
+        backgroundColor[1],
+        backgroundColor[2],
+      );
+
+      res = backgroundColorHSL[2] > 0.5 ? THEMES.light : THEMES.dark;
+    } catch (err) {
+      // noop
+    }
+
+    return res;
   },
 };
 
