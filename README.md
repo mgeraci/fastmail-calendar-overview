@@ -18,7 +18,8 @@ To compile the app for development, run `yarn watch`. This will start a webpack
 watcher and compile files on change. To compile the files once without watching,
 run `yarn build`.
 
-The root of the app is `src/index.js`.
+The root of the extension is `src/extension/index.js`, and the root of the
+options panel is `src/options/index.js`.
 
 ## Adding to your browser for development
 
