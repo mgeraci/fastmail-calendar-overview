@@ -1,3 +1,145 @@
+.options-title {
+  font-size: 22px;
+  line-height: 31px;
+  font-weight: 700; }
+  .options-title-separator {
+    border: none;
+    border-top: 1px solid #ccd0d9;
+    margin: 10px 0 40px; }
+
+.options-description-code {
+  display: inline;
+  background: #ebedf2;
+  padding: 1px 3px;
+  border: 1px solid #ccd0d9;
+  border-radius: 2px;
+  font-family: Monaco, monospace;
+  font-size: 0.8em;
+  line-height: 0; }
+
+.oknf-switch {
+  display: block;
+  position: relative;
+  padding-left: 43px;
+  height: 26px;
+  line-height: 26px;
+  cursor: pointer; }
+  .oknf-switch input {
+    position: absolute;
+    top: calc(50% - 5px);
+    left: 21.5px; }
+  .oknf-switch--has-label {
+    padding-left: 56px; }
+  .oknf-switch:active .oknf-switch-decoration,
+  .oknf-switch input:focus ~ .oknf-switch-decoration {
+    background: #a0a7b4; }
+  .oknf-switch input:checked:active ~ .oknf-switch-decoration,
+  .oknf-switch input:checked:focus ~ .oknf-switch-decoration {
+    background: #1bab67; }
+  .oknf-switch-decoration {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 43px;
+    height: 26px;
+    padding: 3px;
+    border-radius: 26px;
+    background: #aeb4bf;
+    transition: background 75ms linear; }
+    .oknf-switch-decoration::before {
+      content: " ";
+      display: block;
+      width: 20px;
+      height: 20px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 75ms linear; }
+  .oknf-switch input:checked ~ .oknf-switch-decoration {
+    background: #1fc174; }
+    .oknf-switch input:checked ~ .oknf-switch-decoration::before {
+      transform: translateX(17px); }
+  .oknf-switch--has-bg {
+    min-width: 250px;
+    height: 46px;
+    padding-top: 10px;
+    padding-left: 66px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px; }
+    .oknf-switch--has-bg .oknf-switch-decoration {
+      top: 10px;
+      left: 10px; }
+
+.options-calendar {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 17px 22px 22px;
+  border: 0;
+  background: #ebedf2;
+  border-radius: 5px; }
+  .options-calendar + .options-calendar {
+    margin-top: 30px; }
+  .options-calendar-field + .options-calendar-field {
+    margin-top: 20px; }
+  .options-calendar-label {
+    display: block;
+    width: 100%;
+    font-weight: 500; }
+  .options-calendar-input {
+    margin-top: 3px;
+    padding: 6px 8px;
+    border: 1px solid #aeb4bf;
+    border-radius: 3px;
+    transition: border-color 75ms linear;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400; }
+    .options-calendar-input:focus {
+      outline: none;
+      border-color: #4c7bd9; }
+    .options-calendar-input--url {
+      width: 100%; }
+  .options-calendar-error {
+    display: block;
+    margin-top: 15px;
+    font-size: 14px;
+    line-height: 21px;
+    color: #f95133; }
+  .options-calendar--hasError {
+    box-shadow: 0 0 4px #fa8575; }
+  .options-calendar-remove {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    display: block;
+    position: absolute;
+    overflow: hidden;
+    top: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 22px;
+    line-height: 21.6px;
+    text-align: center;
+    background: #ccd0d9;
+    transition: background-color 25ms linear, color 25ms linear; }
+    .options-calendar-remove:hover {
+      background: #e84832;
+      color: #ffffff; }
+    .options-calendar-remove:focus {
+      outline: none; }
+    .options-calendar-remove-icon {
+      display: block;
+      width: 100%;
+      height: 100%; }
+    .options-calendar-remove-text {
+      position: absolute;
+      top: 24px; }
+
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
@@ -63,91 +205,15 @@ table {
     transform: translateX(-50%);
     width: 100%;
     max-width: 800px; }
-  .options-title {
-    font-size: 22px;
-    line-height: 31px;
-    font-weight: 700; }
-    .options-title-separator {
-      border: none;
-      border-top: 1px solid #ccd0d9;
-      margin: 10px 0 40px; }
-  .options-description-code {
-    display: inline;
-    background: #ebedf2;
-    padding: 1px 3px;
-    border: 1px solid #ccd0d9;
-    border-radius: 2px;
-    font-family: Monaco, monospace;
-    font-size: 0.8em;
-    line-height: 0; }
-  .options-calendar {
-    position: relative;
+  .options-section-header {
+    font-size: 18px;
+    line-height: 27px;
+    font-weight: 700;
     display: block;
     width: 100%;
-    margin: 0;
-    padding: 3%;
-    border: 0;
-    background: #ebedf2;
-    border-radius: 5px; }
-    .options-calendar-field + .options-calendar-field {
-      margin-top: 20px; }
-    .options-calendar-label {
-      display: block;
-      width: 100%;
-      font-weight: 500; }
-    .options-calendar-input {
-      margin-top: 3px;
-      padding: 6px 8px;
-      border: 1px solid #aeb4bf;
-      border-radius: 3px;
-      transition: border-color 75ms linear;
-      font-size: 16px;
-      line-height: 24px;
-      font-weight: 400; }
-      .options-calendar-input:focus {
-        outline: none;
-        border-color: #4c7bd9; }
-      .options-calendar-input--url {
-        width: 100%; }
-    .options-calendar-error {
-      display: block;
-      margin-top: 15px;
-      font-size: 14px;
-      line-height: 21px;
-      color: #f95133; }
-    .options-calendar--hasError {
-      box-shadow: 0 0 4px #fa8575; }
-    .options-calendar-remove {
-      background: transparent;
-      border: 0;
-      padding: 0;
-      cursor: pointer;
-      display: block;
-      position: absolute;
-      overflow: hidden;
-      top: 10px;
-      right: 10px;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      font-size: 22px;
-      line-height: 21.6px;
-      text-align: center;
-      background: #ccd0d9;
-      transition: background-color 25ms linear, color 25ms linear; }
-      .options-calendar-remove:hover {
-        background: #e84832;
-        color: #ffffff; }
-      .options-calendar-remove:focus {
-        outline: none; }
-      .options-calendar-remove-icon {
-        display: block;
-        width: 100%;
-        height: 100%; }
-      .options-calendar-remove-text {
-        position: absolute;
-        top: 24px; }
-  .options-calendar, .options-add, .options-footer {
+    margin-top: 30px;
+    margin-bottom: 10px; }
+  .options-add, .options-footer {
     margin-top: 30px; }
   .options-add {
     background: transparent;

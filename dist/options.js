@@ -33036,6 +33036,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _util_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./util/constants */ "./src/options/util/constants.js");
 /* harmony import */ var _components_Options__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Options */ "./src/options/components/Options.jsx");
+/* harmony import */ var _App_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./App.scss */ "./src/options/App.scss");
+/* harmony import */ var _App_scss__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_App_scss__WEBPACK_IMPORTED_MODULE_4__);
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -33061,6 +33063,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
  // keys kept on an individual calendar that we don't want to save
 
 var LOCAL_KEYS = ['hasError'];
@@ -33082,15 +33085,21 @@ var App = function App(_ref) {
       saveStatus = _useState4[0],
       setSaveStatus = _useState4[1];
 
-  var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(),
+  var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
       _useState6 = _slicedToArray(_useState5, 2),
-      calendars = _useState6[0],
-      setCalendars = _useState6[1];
+      use24HrTime = _useState6[0],
+      setUse24HrTime = _useState6[1];
+
+  var _useState7 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(),
+      _useState8 = _slicedToArray(_useState7, 2),
+      calendars = _useState8[0],
+      setCalendars = _useState8[1];
 
   var loadCalendars = function loadCalendars() {
     storage.get().then(function (res) {
-      var initialState = res && res.length ? res : [_objectSpread({}, _util_constants__WEBPACK_IMPORTED_MODULE_2__["EMPTY_CALENDAR"])];
-      setCalendars(initialState);
+      var initialCalendars = res.calendars && res.calendars.length ? res.calendars : [_objectSpread({}, _util_constants__WEBPACK_IMPORTED_MODULE_2__["EMPTY_CALENDAR"])];
+      setCalendars(initialCalendars);
+      setUse24HrTime(res.use24HrTime);
     })["catch"](function (err) {
       setHasLoadError(true);
       console.error(err); // eslint-disable-line no-console
@@ -33103,10 +33112,10 @@ var App = function App(_ref) {
     }
   }, [calendars, setCalendars]);
 
-  var _useState7 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
-      _useState8 = _slicedToArray(_useState7, 2),
-      canSave = _useState8[0],
-      setCanSave = _useState8[1];
+  var _useState9 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
+      _useState10 = _slicedToArray(_useState9, 2),
+      canSave = _useState10[0],
+      setCanSave = _useState10[1];
 
   if (hasLoadError) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -33124,6 +33133,11 @@ var App = function App(_ref) {
       className: "loader"
     });
   }
+
+  var onChange24HrTime = function onChange24HrTime() {
+    setUse24HrTime(!use24HrTime);
+    setCanSave(true);
+  };
 
   var onChange = function onChange(_ref2) {
     var index = _ref2.index,
@@ -33189,11 +33203,14 @@ var App = function App(_ref) {
       });
       return calendar;
     });
-    storage.set(calendarsToSave).then(function () {
+    storage.set({
+      calendars: calendarsToSave,
+      use24HrTime: use24HrTime
+    }).then(function () {
       setCanSave(false);
       setSaveStatus({
         type: SAVE_STATUSES.success,
-        message: 'Calendars saved!'
+        message: 'Saved!'
       });
       setTimeout(function () {
         setSaveStatus(null);
@@ -33214,6 +33231,8 @@ var App = function App(_ref) {
     removeCalendar: removeCalendar,
     onSave: onSave,
     canSave: canSave,
+    use24HrTime: use24HrTime,
+    onChange24HrTime: onChange24HrTime,
     saveStatus: saveStatus
   });
 };
@@ -33225,6 +33244,17 @@ App.propTypes = {
   }).isRequired
 };
 /* harmony default export */ __webpack_exports__["default"] = (App);
+
+/***/ }),
+
+/***/ "./src/options/App.scss":
+/*!******************************!*\
+  !*** ./src/options/App.scss ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
 
 /***/ }),
 
@@ -33242,6 +33272,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _util_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util/constants */ "./src/options/util/constants.js");
+/* harmony import */ var _Calendar_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Calendar.scss */ "./src/options/components/Calendar.scss");
+/* harmony import */ var _Calendar_scss__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_Calendar_scss__WEBPACK_IMPORTED_MODULE_3__);
+
 
 
 
@@ -33304,6 +33337,17 @@ Calendar.propTypes = {
 
 /***/ }),
 
+/***/ "./src/options/components/Calendar.scss":
+/*!**********************************************!*\
+  !*** ./src/options/components/Calendar.scss ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
 /***/ "./src/options/components/Header.jsx":
 /*!*******************************************!*\
   !*** ./src/options/components/Header.jsx ***!
@@ -33315,6 +33359,9 @@ Calendar.propTypes = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Header_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Header.scss */ "./src/options/components/Header.scss");
+/* harmony import */ var _Header_scss__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_Header_scss__WEBPACK_IMPORTED_MODULE_1__);
+
 
 
 var Header = function Header() {
@@ -33333,6 +33380,17 @@ var Header = function Header() {
 
 /***/ }),
 
+/***/ "./src/options/components/Header.scss":
+/*!********************************************!*\
+  !*** ./src/options/components/Header.scss ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
 /***/ "./src/options/components/Options.jsx":
 /*!********************************************!*\
   !*** ./src/options/components/Options.jsx ***!
@@ -33347,7 +33405,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Header */ "./src/options/components/Header.jsx");
-/* harmony import */ var _Calendar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Calendar */ "./src/options/components/Calendar.jsx");
+/* harmony import */ var _StylePreferences__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./StylePreferences */ "./src/options/components/StylePreferences.jsx");
+/* harmony import */ var _Calendar__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Calendar */ "./src/options/components/Calendar.jsx");
+/* harmony import */ var _Options_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Options.scss */ "./src/options/components/Options.scss");
+/* harmony import */ var _Options_scss__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_Options_scss__WEBPACK_IMPORTED_MODULE_5__);
+
+
 
 
 
@@ -33360,12 +33423,19 @@ var Options = function Options(_ref) {
       removeCalendar = _ref.removeCalendar,
       onSave = _ref.onSave,
       canSave = _ref.canSave,
+      use24HrTime = _ref.use24HrTime,
+      onChange24HrTime = _ref.onChange24HrTime,
       saveStatus = _ref.saveStatus;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "options-content"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Header__WEBPACK_IMPORTED_MODULE_2__["default"], null), calendars.map(function (calendar, i) {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Header__WEBPACK_IMPORTED_MODULE_2__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_StylePreferences__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    use24HrTime: use24HrTime,
+    onChange24HrTime: onChange24HrTime
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "options-section-header"
+  }, "Calendars"), calendars.map(function (calendar, i) {
     var key = "calendar-".concat(i);
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Calendar__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Calendar__WEBPACK_IMPORTED_MODULE_4__["default"], {
       key: key,
       index: i,
       calendar: calendar,
@@ -33402,6 +33472,8 @@ Options.propTypes = {
   removeCalendar: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func.isRequired,
   onSave: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func.isRequired,
   canSave: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool.isRequired,
+  use24HrTime: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool.isRequired,
+  onChange24HrTime: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func.isRequired,
   saveStatus: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.shape({
     type: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired,
     message: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired
@@ -33411,6 +33483,147 @@ Options.defaultProps = {
   saveStatus: null
 };
 /* harmony default export */ __webpack_exports__["default"] = (Options);
+
+/***/ }),
+
+/***/ "./src/options/components/Options.scss":
+/*!*********************************************!*\
+  !*** ./src/options/components/Options.scss ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ "./src/options/components/StylePreferences.jsx":
+/*!*****************************************************!*\
+  !*** ./src/options/components/StylePreferences.jsx ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _Switch__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Switch */ "./src/options/components/Switch.jsx");
+
+
+
+
+var StylePreferences = function StylePreferences(_ref) {
+  var use24HrTime = _ref.use24HrTime,
+      onChange24HrTime = _ref.onChange24HrTime;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "options-section-header"
+  }, "Preferences"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Switch__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    label: "Use 24hr time",
+    checked: use24HrTime,
+    onChange: onChange24HrTime,
+    className: "options-preference"
+  }));
+};
+
+StylePreferences.propTypes = {
+  use24HrTime: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool.isRequired,
+  onChange24HrTime: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func.isRequired
+};
+/* harmony default export */ __webpack_exports__["default"] = (StylePreferences);
+
+/***/ }),
+
+/***/ "./src/options/components/Switch.jsx":
+/*!*******************************************!*\
+  !*** ./src/options/components/Switch.jsx ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _Switch_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Switch.scss */ "./src/options/components/Switch.scss");
+/* harmony import */ var _Switch_scss__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_Switch_scss__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+
+var Switch = function Switch(_ref) {
+  var label = _ref.label,
+      name = _ref.name,
+      value = _ref.value,
+      checked = _ref.checked,
+      disabled = _ref.disabled,
+      hasBg = _ref.hasBg,
+      onChange = _ref.onChange,
+      className = _ref.className;
+  var clickableClasses = 'oknf-switch oknf-switch--has-label';
+
+  if (hasBg) {
+    clickableClasses = "".concat(clickableClasses, " oknf-switch--has-bg");
+  }
+
+  if (disabled) {
+    clickableClasses = "".concat(clickableClasses, " oknf-switch--disabled");
+  }
+
+  if (className) {
+    clickableClasses = "".concat(clickableClasses, " ").concat(className);
+  }
+
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+    className: clickableClasses
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "checkbox",
+    name: name,
+    value: value,
+    checked: checked,
+    disabled: disabled,
+    onChange: onChange
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "oknf-switch-decoration"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "oknf-switch-label"
+  }, label));
+};
+
+Switch.propTypes = {
+  value: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.node, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool]),
+  label: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.node.isRequired,
+  onChange: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func.isRequired,
+  className: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+  name: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+  hasBg: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+  disabled: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+  checked: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool
+};
+Switch.defaultProps = {
+  value: '',
+  className: null,
+  name: null,
+  hasBg: false,
+  disabled: false,
+  checked: false
+};
+/* harmony default export */ __webpack_exports__["default"] = (Switch);
+
+/***/ }),
+
+/***/ "./src/options/components/Switch.scss":
+/*!********************************************!*\
+  !*** ./src/options/components/Switch.scss ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
 
 /***/ }),
 
@@ -33429,10 +33642,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _browserStorage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../browserStorage */ "./src/browserStorage/index.js");
 /* harmony import */ var _App__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./App */ "./src/options/App.jsx");
-/* harmony import */ var _index_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./index.scss */ "./src/options/index.scss");
-/* harmony import */ var _index_scss__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_index_scss__WEBPACK_IMPORTED_MODULE_4__);
 /* global document */
-
 
 
 
@@ -33450,17 +33660,6 @@ var FastmailCalendarOverviewOptions = {
   }
 };
 document.addEventListener('DOMContentLoaded', FastmailCalendarOverviewOptions.init.bind(FastmailCalendarOverviewOptions));
-
-/***/ }),
-
-/***/ "./src/options/index.scss":
-/*!********************************!*\
-  !*** ./src/options/index.scss ***!
-  \********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
 
 /***/ }),
 

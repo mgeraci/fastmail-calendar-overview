@@ -8,6 +8,7 @@ import {
   MAX_HEIGHT,
   MIN_HEIGHT,
   REFRESH_INTERVAL,
+  OPTION_24_HR,
   FETCH_STATUSES,
   THEMES,
 } from './util/constants';
@@ -27,9 +28,12 @@ const FastmailCalendarOverview = {
     // get the user's calendars from browser storage, then run the rest of the
     // script
     storage.get().then((res) => {
-      console.log('Fastmail Calendar Overview, calendars:', res); // eslint-disable-line
+      console.log('Fastmail Calendar Overview, calendars:', res.calendars); // eslint-disable-line
 
-      this.calendars = res;
+      this.calendars = res.calendars;
+      this.options = {
+        [OPTION_24_HR]: res.use24HrTime,
+      };
       this.run();
       this.startInterval();
     }).catch((err) => {
@@ -111,7 +115,13 @@ const FastmailCalendarOverview = {
         return;
       }
 
-      const parsedEvents = vCalendar.parse(result.data, result.name);
+      const parsedEvents = vCalendar.parse({
+        data: result.data,
+        calendarName: result.name,
+        options: {
+          [OPTION_24_HR]: this.options[OPTION_24_HR],
+        },
+      });
       events = events.concat(parsedEvents);
     });
 

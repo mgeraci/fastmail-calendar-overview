@@ -1,0 +1,26 @@
+@import "../util/_variables";
+
+.options {
+  &-title {
+    @include font-headline;
+
+    &-separator {
+      border: none;
+      border-top: 1px solid $Colors-gray-5;
+      margin: 10px 0 40px;
+    }
+  }
+
+  &-description {
+    &-code {
+      display: inline;
+      background: $Colors-gray-6;
+      padding: 1px 3px;
+      border: 1px solid $Colors-gray-5;
+      border-radius: 2px;
+      font-family: Monaco, monospace;
+      font-size: 0.8em;
+      line-height: 0;
+    }
+  }
+}

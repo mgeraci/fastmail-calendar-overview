@@ -18101,6 +18101,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _templates__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./templates */ "./src/extension/templates.js");
 /* harmony import */ var _index_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./index.scss */ "./src/extension/index.scss");
 /* harmony import */ var _index_scss__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_index_scss__WEBPACK_IMPORTED_MODULE_5__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 /* global window, document, fetch */
 
 
@@ -18116,9 +18118,10 @@ var FastmailCalendarOverview = {
     // script
 
     storage.get().then(function (res) {
-      console.log('Fastmail Calendar Overview, calendars:', res); // eslint-disable-line
+      console.log('Fastmail Calendar Overview, calendars:', res.calendars); // eslint-disable-line
 
-      _this.calendars = res;
+      _this.calendars = res.calendars;
+      _this.options = _defineProperty({}, _util_constants__WEBPACK_IMPORTED_MODULE_0__["OPTION_24_HR"], res.use24HrTime);
 
       _this.run();
 
@@ -18190,6 +18193,8 @@ var FastmailCalendarOverview = {
     });
   },
   parseResults: function parseResults(results) {
+    var _this4 = this;
+
     var events = [];
     results.forEach(function (result) {
       if (result.status === _util_constants__WEBPACK_IMPORTED_MODULE_0__["FETCH_STATUSES"].error) {
@@ -18198,7 +18203,11 @@ var FastmailCalendarOverview = {
         return;
       }
 
-      var parsedEvents = _vCalendar__WEBPACK_IMPORTED_MODULE_3__["default"].parse(result.data, result.name);
+      var parsedEvents = _vCalendar__WEBPACK_IMPORTED_MODULE_3__["default"].parse({
+        data: result.data,
+        calendarName: result.name,
+        options: _defineProperty({}, _util_constants__WEBPACK_IMPORTED_MODULE_0__["OPTION_24_HR"], _this4.options[_util_constants__WEBPACK_IMPORTED_MODULE_0__["OPTION_24_HR"]])
+      });
       events = events.concat(parsedEvents);
     });
     events = _vCalendar__WEBPACK_IMPORTED_MODULE_3__["default"].groupEvents(events);
@@ -18207,7 +18216,7 @@ var FastmailCalendarOverview = {
     return Promise.resolve(events);
   },
   addMarkup: function addMarkup(events) {
-    var _this4 = this;
+    var _this5 = this;
 
     // save some dom refs
     this.wrapper = document.getElementById(_util_constants__WEBPACK_IMPORTED_MODULE_0__["WRAPPER_ID"]);
@@ -18221,7 +18230,7 @@ var FastmailCalendarOverview = {
 
     if (!this.wrapper && !this.targetDiv) {
       setTimeout(function () {
-        _this4.addMarkup(events);
+        _this5.addMarkup(events);
       }, 500);
       return;
     } // remove the calendar overview if it already exists
@@ -18329,7 +18338,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!*****************************************!*\
   !*** ./src/extension/util/constants.js ***!
   \*****************************************/
-/*! exports provided: FASTMAIL_ROOT_DIV, TARGET_DIV, LAST_FASTMAIL_ELEMENT, WRAPPER_ID, MAX_HEIGHT, MIN_HEIGHT, REFRESH_INTERVAL, EVENT_HORIZON, MS_PER_DAY, FETCH_STATUSES, THEMES, VCAL_FIELDS, MONTHS, DAYS_SHORT */
+/*! exports provided: FASTMAIL_ROOT_DIV, TARGET_DIV, LAST_FASTMAIL_ELEMENT, WRAPPER_ID, MAX_HEIGHT, MIN_HEIGHT, REFRESH_INTERVAL, EVENT_HORIZON, MS_PER_DAY, OPTION_24_HR, FETCH_STATUSES, THEMES, VCAL_FIELDS, MONTHS, DAYS_SHORT */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18343,6 +18352,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REFRESH_INTERVAL", function() { return REFRESH_INTERVAL; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EVENT_HORIZON", function() { return EVENT_HORIZON; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MS_PER_DAY", function() { return MS_PER_DAY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OPTION_24_HR", function() { return OPTION_24_HR; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FETCH_STATUSES", function() { return FETCH_STATUSES; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "THEMES", function() { return THEMES; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VCAL_FIELDS", function() { return VCAL_FIELDS; });
@@ -18366,6 +18376,7 @@ var REFRESH_INTERVAL = 1000 * 60 * 15; // how far into the future to show events
 
 var EVENT_HORIZON = 1000 * 60 * 60 * 24 * 30;
 var MS_PER_DAY = 86400000;
+var OPTION_24_HR = '24_hr_time';
 var FETCH_STATUSES = {
   success: 'success',
   error: 'error'
@@ -18492,10 +18503,15 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   // given data from a calendar url, make an array of events
-  parse: function parse(data, calendar) {
+  parse: function parse(_ref) {
     var _this = this;
 
-    // save some information about today to the singleton for reuse
+    var data = _ref.data,
+        calendarName = _ref.calendarName,
+        _ref$options = _ref.options,
+        options = _ref$options === void 0 ? {} : _ref$options;
+    this.options = options; // save some information about today to the singleton for reuse
+
     this.now = new Date();
     this.today = this.getMidnightFromTime(this.now);
     this.nowDateBucket = this.getNowDateBucket(); // the timezone offset is in hours, so convert to ms
@@ -18515,7 +18531,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
       if (_this.isLine(line, 'BEGIN:VEVENT')) {
         event = {};
-        event.calendar = calendar;
+        event.calendar = calendarName;
       } // finish and commit an event
 
 
@@ -18666,7 +18682,16 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
     var hours = eventDateObj.getHours();
     var minutes = eventDateObj.getMinutes();
-    event.timeString = "".concat(this.stringPadNumber(hours), ":").concat(this.stringPadNumber(minutes));
+
+    if (this.options[_util_constants__WEBPACK_IMPORTED_MODULE_3__["OPTION_24_HR"]]) {
+      event.timeString = "".concat(this.stringPadNumber(hours), ":").concat(this.stringPadNumber(minutes));
+    } else {
+      var hoursRes = hours > 12 ? hours - 12 : hours;
+      hoursRes = hours === 0 ? 12 : hoursRes;
+      var suffix = hours > 12 ? 'pm' : 'am';
+      event.timeString = "".concat(hoursRes, ":").concat(this.stringPadNumber(minutes)).concat(suffix);
+    }
+
     return event;
   },
   stringPadNumber: function stringPadNumber(num) {

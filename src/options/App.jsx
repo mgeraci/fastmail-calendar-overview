@@ -5,6 +5,8 @@ import { FIELD_ORDER, EMPTY_CALENDAR } from './util/constants';
 
 import Options from './components/Options';
 
+import './App.scss';
+
 // keys kept on an individual calendar that we don't want to save
 const LOCAL_KEYS = ['hasError'];
 
@@ -16,16 +18,18 @@ const SAVE_STATUSES = {
 const App = ({ storage }) => {
   const [hasLoadError, setHasLoadError] = useState(false);
   const [saveStatus, setSaveStatus] = useState(null);
+  const [use24HrTime, setUse24HrTime] = useState(false);
   const [calendars, setCalendars] = useState();
 
   const loadCalendars = () => {
     storage.get()
       .then((res) => {
-        const initialState = res && res.length
-          ? res
+        const initialCalendars = res.calendars && res.calendars.length
+          ? res.calendars
           : [{ ...EMPTY_CALENDAR }];
 
-        setCalendars(initialState);
+        setCalendars(initialCalendars);
+        setUse24HrTime(res.use24HrTime);
       }).catch((err) => {
         setHasLoadError(true);
         console.error(err); // eslint-disable-line no-console
@@ -66,6 +70,11 @@ const App = ({ storage }) => {
       <div className="loader" />
     );
   }
+
+  const onChange24HrTime = () => {
+    setUse24HrTime(!use24HrTime);
+    setCanSave(true);
+  };
 
   const onChange = ({
     index,
@@ -141,12 +150,15 @@ const App = ({ storage }) => {
       return calendar;
     });
 
-    storage.set(calendarsToSave)
+    storage.set({
+      calendars: calendarsToSave,
+      use24HrTime,
+    })
       .then(() => {
         setCanSave(false);
         setSaveStatus({
           type: SAVE_STATUSES.success,
-          message: 'Calendars saved!',
+          message: 'Saved!',
         });
 
         setTimeout(() => {
@@ -169,6 +181,8 @@ const App = ({ storage }) => {
       removeCalendar={removeCalendar}
       onSave={onSave}
       canSave={canSave}
+      use24HrTime={use24HrTime}
+      onChange24HrTime={onChange24HrTime}
       saveStatus={saveStatus}
     />
   );

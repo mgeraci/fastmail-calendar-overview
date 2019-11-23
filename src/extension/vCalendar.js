@@ -8,11 +8,14 @@ import {
   EVENT_HORIZON,
   VCAL_FIELDS,
   MS_PER_DAY,
+  OPTION_24_HR,
 } from './util/constants';
 
 export default {
   // given data from a calendar url, make an array of events
-  parse(data, calendar) {
+  parse({ data, calendarName, options = {} }) {
+    this.options = options;
+
     // save some information about today to the singleton for reuse
     this.now = new Date();
     this.today = this.getMidnightFromTime(this.now);
@@ -37,7 +40,7 @@ export default {
       // start an event
       if (this.isLine(line, 'BEGIN:VEVENT')) {
         event = {};
-        event.calendar = calendar;
+        event.calendar = calendarName;
       }
 
       // finish and commit an event
@@ -203,7 +206,15 @@ export default {
 
     const hours = eventDateObj.getHours();
     const minutes = eventDateObj.getMinutes();
-    event.timeString = `${this.stringPadNumber(hours)}:${this.stringPadNumber(minutes)}`;
+
+    if (this.options[OPTION_24_HR]) {
+      event.timeString = `${this.stringPadNumber(hours)}:${this.stringPadNumber(minutes)}`;
+    } else {
+      let hoursRes = hours > 12 ? hours - 12 : hours;
+      hoursRes = hours === 0 ? 12 : hoursRes;
+      const suffix = hours > 12 ? 'pm' : 'am';
+      event.timeString = `${hoursRes}:${this.stringPadNumber(minutes)}${suffix}`;
+    }
 
     return event;
   },

@@ -1,0 +1,88 @@
+@import "../util/_variables";
+@import "../util/reset";
+
+$footer-height: calc(#{$footer-padding * 2} + #{$button-height} + #{$gutter});
+
+.options {
+  padding: $body-padding;
+  padding-bottom: $footer-height;
+  background: $Colors-gray-7;
+
+  font-family: "Helvetica Neue", Helvetica, Arial, "sans-serif";
+  color: $Colors-gray-1;
+  @include font-body;
+
+  &,
+  * {
+    box-sizing: border-box;
+  }
+
+  &-content {
+    @include content-width;
+  }
+
+  &-section-header {
+    @include font-subheadline;
+    display: block;
+    width: 100%;
+    margin-top: $gutter;
+    margin-bottom: 10px;
+  }
+
+  &-add,
+  &-footer {
+    margin-top: $gutter;
+  }
+
+  &-add {
+    @include button($Colors-gray-5, $Colors-gray-2);
+  }
+
+  &-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: $footer-padding $body-padding;
+    background: $Colors-gray-7;
+    box-shadow: 0 -2px 4px rgba(#000, 0.2);
+
+    &-content {
+      @include content-width;
+    }
+
+    &-message {
+      margin-left: 15px;
+
+      &--success {
+        color: $Colors-green-1;
+      }
+
+      &--error {
+        color: $Colors-red-5;
+      }
+    }
+  }
+
+  &-save {
+    @include button($Colors-blue-3, $Colors-white);
+  }
+
+  &-loading-error {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    text-align: center;
+    color: $Colors-red-5;
+
+    &-link {
+      color: $Colors-red-5;
+
+      &:hover {
+        color: $Colors-red-2;
+      }
+    }
+  }
+}

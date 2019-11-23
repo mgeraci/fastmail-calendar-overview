@@ -1,0 +1,86 @@
+@import "../util/_variables";
+
+.oknf-switch {
+  display: block;
+  position: relative;
+  padding-left: $oknf-switch-width;
+  height: $oknf-switch-height;
+  line-height: $oknf-switch-height;
+  cursor: pointer;
+
+  // hide the normal input element behind the decoration
+  input {
+    position: absolute;
+    top: calc(50% - 5px);
+    left: $oknf-switch-width * 0.5;
+  }
+
+  &--has-label {
+    padding-left: $oknf-switch-width + $oknf-element-padding;
+  }
+
+  &:active .oknf-switch-decoration,
+  input:focus ~ .oknf-switch-decoration {
+    background: darken($oknf-switch-inactive-bg, 5%);
+  }
+
+  input:checked:active ~ .oknf-switch-decoration,
+  input:checked:focus ~ .oknf-switch-decoration {
+    background: darken($Colors-green-1, 5%);
+  }
+
+  $switch-offset: ($oknf-switch-height - $oknf-switch-button-size) / 2;
+
+  &-decoration {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: $oknf-switch-width;
+    height: $oknf-switch-height;
+    padding: $switch-offset;
+    border-radius: $oknf-switch-height;
+    background: $oknf-switch-inactive-bg;
+    transition: background $oknf-transition linear;
+
+    &::before {
+      content: " ";
+      display: block;
+      width: $oknf-switch-button-size;
+      height: $oknf-switch-button-size;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform $oknf-transition linear;
+    }
+  }
+
+  // on state
+  ///////////
+
+  $switch-on-position: $oknf-switch-width - $oknf-switch-button-size - $switch-offset * 2;
+  input:checked ~ .oknf-switch-decoration {
+    background: $Colors-green-1;
+
+    &::before {
+      transform: translateX($switch-on-position);
+    }
+  }
+
+  // version with a background container
+  //////////////////////////////////////
+
+  $bg-padding: ($oknf-height - $oknf-switch-height) / 2;
+  &--has-bg {
+    min-width: $oknf-min-width;
+    height: $oknf-height;
+    padding-top: $bg-padding;
+    padding-left: $oknf-switch-width + $bg-padding + $oknf-element-padding;
+    background: rgba(#000, 0.05);
+    border-radius: $oknf-br;
+
+    .oknf-switch-decoration {
+      top: $bg-padding;
+      left: $bg-padding;
+    }
+  }
+}

@@ -28,6 +28,18 @@ $Colors-red-2: #fb674e;
 $Colors-red-4: #fa8575;
 $Colors-red-5: #e84832;
 
+$oknf-switch-margin: 11px;
+$oknf-element-size: 20px;
+$oknf-element-padding: 13px;
+$oknf-br: 3px;
+$oknf-min-width: 250px;
+$oknf-height: 46px;
+$oknf-transition: 75ms;
+$oknf-switch-width: 43px;
+$oknf-switch-height: 26px;
+$oknf-switch-button-size: 20px;
+$oknf-switch-inactive-bg: $Colors-gray-4;
+
 $loader-size: 40px;
 $button-height: 46px;
 $remove-button-size: 24px;
@@ -46,6 +58,12 @@ $gutter: 30px;
 @mixin font-headline {
   font-size: 22px;
   line-height: 31px;
+  font-weight: 700;
+}
+
+@mixin font-subheadline {
+  font-size: 18px;
+  line-height: 27px;
   font-weight: 700;
 }
 

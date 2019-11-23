@@ -24,6 +24,8 @@ export const EVENT_HORIZON = 1000 * 60 * 60 * 24 * 30;
 
 export const MS_PER_DAY = 86400000;
 
+export const OPTION_24_HR = '24_hr_time';
+
 export const FETCH_STATUSES = {
   success: 'success',
   error: 'error',

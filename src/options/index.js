@@ -7,8 +7,6 @@ import BrowserStorage from '../browserStorage';
 
 import App from './App';
 
-import './index.scss';
-
 const FastmailCalendarOverviewOptions = {
   hasStorageGetError: false,
 

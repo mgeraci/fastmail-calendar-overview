@@ -2,7 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Header from './Header';
+import StylePreferences from './StylePreferences';
 import Calendar from './Calendar';
+
+import './Options.scss';
 
 const Options = ({
   calendars,
@@ -11,11 +14,22 @@ const Options = ({
   removeCalendar,
   onSave,
   canSave,
+  use24HrTime,
+  onChange24HrTime,
   saveStatus,
 }) => (
   <>
     <div className="options-content">
       <Header />
+
+      <StylePreferences
+        use24HrTime={use24HrTime}
+        onChange24HrTime={onChange24HrTime}
+      />
+
+      <span className="options-section-header">
+        Calendars
+      </span>
 
       {calendars.map((calendar, i) => {
         const key = `calendar-${i}`;
@@ -73,6 +87,8 @@ Options.propTypes = {
   removeCalendar: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   canSave: PropTypes.bool.isRequired,
+  use24HrTime: PropTypes.bool.isRequired,
+  onChange24HrTime: PropTypes.func.isRequired,
   saveStatus: PropTypes.shape({
     type: PropTypes.string.isRequired,
     message: PropTypes.string.isRequired,

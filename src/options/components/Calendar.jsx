@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { FIELD_ORDER, FIELD_LABELS } from '../util/constants';
 
+import './Calendar.scss';
+
 const Calendar = ({
   index,
   calendar,
