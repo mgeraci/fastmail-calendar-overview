@@ -2,6 +2,12 @@
 	"name": "Fastmail Calendar Overview",
 	"description": "Show an overview of your day's calendar events Fastmail's leftbar.",
 	"version": "1.0.0",
+	"icons": {
+		"48": "icons/48x48.png",
+		"96": "icons/96x96.png",
+		"128": "icons/128x128.png",
+		"256": "icons/256x256.png"
+	},
 	"content_scripts": [ {
 		"matches": [
 			"http://*.fastmail.com/*",
